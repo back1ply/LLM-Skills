@@ -5,7 +5,7 @@
   "description": "Professional LLM skills marketplace for domain-specific code generation and best practices",
   "owner": {
     "name": "back1ply",
-    "email": "github@back1ply.com"
+    "email": "back1ply@gmail.com"
   },
   "plugins": [
     {
@@ -14,7 +14,7 @@
       "version": "1.0.0",
       "author": {
         "name": "back1ply",
-        "email": "github@back1ply.com"
+        "email": "back1ply@gmail.com"
       },
       "source": "./dax",
       "category": "productivity"
