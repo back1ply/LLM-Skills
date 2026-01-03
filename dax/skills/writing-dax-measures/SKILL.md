@@ -14,12 +14,14 @@ Generate correct DAX measures for Power BI on the first attempt by following pre
 ## When to Use
 
 Use this skill when:
+
 - User requests DAX measure creation
 - User asks to write Power BI calculations
 - User needs help with DAX formulas
 - User mentions aggregations, filters, or time intelligence in Power BI context
 
 Do NOT use for:
+
 - SQL queries
 - Excel formulas
 - Python/R data analysis
@@ -46,7 +48,7 @@ Do NOT use for:
 Never use these functions in new DAX code:
 
 | Function | Why Forbidden | Use Instead |
-|----------|---------------|-------------|
+| ---------- | --------------- | ------------- |
 | `EARLIER()` | Deprecated, hard to maintain | `VAR` to save row context values |
 | `IFERROR()` | Unreliable (misses errors), kills performance | `DIVIDE()` for division; design away errors |
 | `ISERROR()` | Same issues as IFERROR | `DIVIDE()` for division; design away errors |
@@ -56,7 +58,7 @@ Never use these functions in new DAX code:
 ### Excel/SQL Functions That Don't Exist in DAX
 
 | Don't Use | DAX Alternative |
-|-----------|-----------------|
+| ----------- | ----------------- |
 | `SUMIF`, `COUNTIF`, `AVERAGEIF` | `CALCULATE([Measure], filter)` |
 | `VLOOKUP`, `HLOOKUP` | `RELATED()` or `LOOKUPVALUE()` |
 | `SAMEPERIODLASTDAY` | Not a DAX function (typo of SAMEPERIODLASTYEAR) |
@@ -89,7 +91,7 @@ SUMX(Sales, IF(Sales[Category] = "A", Sales[Amount], 0))  -- Use CALCULATE
 
 ### Filter Optimization (Critical for Performance)
 
-**Golden Rule: Filter columns, NOT tables**
+#### Golden Rule: Filter columns, NOT tables
 
 ```dax
 ❌ BAD - Filters entire table
@@ -99,7 +101,7 @@ CALCULATE([Sales], FILTER(ALL(Products), Products[Category] = "Electronics"))
 CALCULATE([Sales], Products[Category] = "Electronics")
 ```
 
-**Filter Early Principle**
+#### Filter Early Principle
 
 ```dax
 ❌ BAD - Complex logic first, then filter
@@ -111,6 +113,7 @@ CALCULATE([ComplexCalculation], 'Date'[Year] = 2024)
 ```
 
 **Additional Filter Rules**:
+
 - Filter lookup (dimension) tables, NOT fact tables
 - Use Boolean expressions instead of FILTER when possible
 - Use `CALCULATETABLE` instead of `FILTER` for table operations
@@ -131,6 +134,7 @@ Variables improve performance AND readability:
 ```
 
 **Example**:
+
 ```dax
 Total Sales Ratio =
 VAR TotalSales = SUM(Sales[Amount])
@@ -247,7 +251,7 @@ CALCULATE(
 Understanding these functions is critical for correct filter behavior:
 
 | Function | Behavior | Use When |
-|----------|----------|----------|
+| ---------- | ---------- | ---------- |
 | `ALL(Table)` | Ignores ALL filters from everywhere | Global calculations, grand totals |
 | `ALLSELECTED(Table)` | Ignores filters from within visual, keeps external filters | Dynamic totals respecting slicers |
 | `ALLEXCEPT(Table, Col1, Col2)` | Removes all filters EXCEPT specified columns | Preserve specific dimensions |
@@ -284,7 +288,7 @@ CALCULATE([Total Sales], REMOVEFILTERS('Date'))
 - BLANK is NOT the same as SQL NULL
 - Power BI automatically filters rows with BLANK values (performance optimization)
 
-### Best Practices
+### BLANK Best Practices
 
 ```dax
 ✅ Let measures return BLANK naturally
@@ -309,7 +313,7 @@ IF(ISBLANK([Measure]), 0, [Measure])  -- Only when UI requires no blanks
 **Default: Always use Measures** unless you need physical column structure.
 
 | Criterion | Measure | Calculated Column |
-|-----------|---------|-------------------|
+| ----------- | --------- | ------------------- |
 | **Evaluation** | Query time (dynamic) | Refresh time (static) |
 | **Storage** | No storage (code only) | Stored in model (uses RAM) |
 | **Performance** | Better (on-demand calculation) | Slower refresh, consumes memory |
@@ -317,106 +321,14 @@ IF(ISBLANK([Measure]), 0, [Measure])  -- Only when UI requires no blanks
 | **Use Cases** | Aggregations, dynamic calculations | Slicers, row-level filters, static lookups |
 
 **Use Calculated Columns only when**:
+
 - Need to use result in slicer
 - Need row-level filtering
 - Performing static lookups with RELATED()
 
-## Relationships & Cross-Filtering
+## Advanced Patterns
 
-### USERELATIONSHIP - Activate Inactive Relationships
-
-```dax
-Sales (Ship Date) =
-CALCULATE(
-    [Total Sales],
-    USERELATIONSHIP(Sales[ShipDate], 'Date'[Date])
-)
-```
-
-Use when you have multiple date columns (OrderDate, ShipDate, DueDate) and need to activate alternate relationship.
-
-### CROSSFILTER - Override Relationship Direction
-
-```dax
-Sales Both Ways =
-CALCULATE(
-    [Total Sales],
-    CROSSFILTER(Products[ProductKey], Sales[ProductKey], BOTH)
-)
-```
-
-**Options**: `NONE`, `SINGLE` (one direction), `BOTH` (bidirectional)
-
-**Best Practice**: Use physical relationships when possible; reserve DAX overrides for specific measure calculations.
-
-## Common Calculation Patterns
-
-### Running Totals / Cumulative
-
-```dax
-Cumulative Sales =
-CALCULATE(
-    [Total Sales],
-    FILTER(
-        ALL('Date'[Date]),
-        'Date'[Date] <= MAX('Date'[Date])
-    )
-)
-```
-
-### Ranking
-
-```dax
-Product Rank =
-RANKX(
-    ALL(Products[ProductName]),
-    [Total Sales],
-    ,
-    DESC,
-    DENSE
-)
-```
-
-**RANKX parameters**: Table, Expression, Value, Order (ASC/DESC), Ties (SKIP/DENSE)
-
-### Moving Average
-
-```dax
-Moving Average 3 Months =
-VAR CurrentDate = MAX('Date'[Date])
-VAR DateRange =
-    DATESINPERIOD(
-        'Date'[Date],
-        CurrentDate,
-        -3,
-        MONTH
-    )
-RETURN
-    CALCULATE(
-        AVERAGE(Sales[Amount]),
-        DateRange
-    )
-```
-
-### Percentage of Total
-
-```dax
-% of Grand Total =
-VAR CurrentSales = [Total Sales]
-VAR TotalSales = CALCULATE([Total Sales], ALL(Sales))
-RETURN
-    DIVIDE(CurrentSales, TotalSales)
-```
-
-### Same Period Last Year
-
-```dax
-Sales Same Period Last Year =
-CALCULATE(
-    [Total Sales],
-    SAMEPERIODLASTYEAR('Date'[Date])
-)
-```
+For relationships (USERELATIONSHIP, CROSSFILTER), running totals, rankings, moving averages, and percentage calculations, see [patterns.md](references/patterns.md).
 
 ## Naming Conventions & Documentation
 
@@ -446,41 +358,15 @@ VAR ActiveCustomers = ...  -- Not just "AC"
 
 **Avoid**: Technical prefixes (dim_, fact_), cryptic abbreviations, unclear variable names
 
-## Debugging Techniques
+## Debugging
 
-### Tools
-
-1. **DAX Studio** - Query plan analysis, performance analyzer
-2. **Tabular Editor 3** - DAX debugger with breakpoints, watch windows
-3. **Variables** - Return intermediate values for inspection
-
-### Debug with Variables
-
-```dax
-Debug Measure =
-VAR Step1 = SUM(Sales[Amount])
-VAR Step2 = CALCULATE(Step1, ALL(Products))
-VAR Step3 = DIVIDE(Step1, Step2)
--- RETURN Step1  -- Debug: Check Step1
--- RETURN Step2  -- Debug: Check Step2
-RETURN Step3     -- Final result
-```
-
-### Common Errors & Fixes
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| Circular dependency | Column references itself in chain | Break loop with different table/approach |
-| Column doesn't exist | Typo or wrong table reference | Verify against live schema extraction |
-| Division by zero | No safeguard | Use `DIVIDE()` instead of `/` |
-| Context transition issue | Measure called in iterator | Cache with VAR outside iterator |
-| Function doesn't exist | Excel/SQL function used | Check against DAX function reference |
+For debugging tools (DAX Studio, Tabular Editor), techniques, common errors and fixes, see [debugging.md](references/debugging.md).
 
 ## Pre-Submission Validation Checklist
 
 **BEFORE submitting DAX code to user, verify:**
 
-```
+```text
 □ All functions exist in DAX (no Excel/SQL functions)
 □ All tables/columns match live schema exactly (case-sensitive)
 □ No deprecated functions (EARLIER, IFERROR, ISERROR, FIRSTNONBLANK, LASTNONBLANK)
@@ -497,7 +383,7 @@ RETURN Step3     -- Final result
 ## Quick Reference Table
 
 | Task | DAX Pattern |
-|------|-------------|
+| ------ | ------------- |
 | Safe division | `DIVIDE([Num], [Denom], 0)` |
 | Remove filters | `REMOVEFILTERS(Table[Column])` |
 | Remove all filters | `ALL(Table[Column])` |
@@ -513,25 +399,3 @@ RETURN Step3     -- Final result
 | First non-blank | `COALESCE([Measure1], [Measure2], 0)` |
 | Related value | `RELATED(DimTable[Column])` |
 | Lookup value | `LOOKUPVALUE(Table[Return], Table[Search], SearchValue)` |
-
-## Real-World Impact
-
-Following these practices enables:
-- **First-try success**: Correct DAX on initial generation
-- **Optimal performance**: Queries execute faster with proper filtering
-- **Maintainable code**: Clear naming and structure for future modifications
-- **Avoided pitfalls**: No deprecated functions or anti-patterns
-- **Professional quality**: Industry best practices from SQLBI, Microsoft, and DAX experts
-
-## Common Mistakes to Avoid
-
-1. **Using Excel formulas** in DAX (SUMIF, VLOOKUP)
-2. **Filtering tables** instead of columns
-3. **Not using variables** for repeated calculations
-4. **Forgetting date table** requirements for time intelligence
-5. **Using IFERROR** instead of designing away errors
-6. **Creating measures that never return BLANK**
-7. **Using deprecated EARLIER** instead of VAR
-8. **Complex logic in iterators** instead of pre-filtering
-9. **Not extracting live schema** before writing DAX
-10. **Ignoring context transition** performance costs
