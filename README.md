@@ -39,11 +39,13 @@ A curated marketplace of high-quality skills for Claude Code, focused on enablin
 Generate correct DAX measures for Power BI on the first attempt with comprehensive best practices, anti-pattern detection, and performance optimization.
 
 **Installation**:
+
 ```bash
 /plugin install dax@LLM-Skills
 ```
 
 **What it provides**:
+
 - ✅ Pre-generation workflow with live schema extraction
 - ✅ Anti-pattern detection (deprecated functions, Excel/SQL functions)
 - ✅ Performance optimization (filter columns not tables, use variables)
@@ -56,11 +58,67 @@ Generate correct DAX measures for Power BI on the first attempt with comprehensi
 
 ---
 
+### Prompt Engineering
+
+**Status**: ✅ Available
+**Version**: 1.0.0
+**Category**: Productivity
+
+Expert prompt engineering assistance using 11 foundational techniques from Forward Future's guide. Write, improve, and fix prompts for ChatGPT, Claude, Gemini.
+
+**Installation**:
+
+```bash
+/plugin install prompt-engineering@LLM-Skills
+```
+
+**What it provides**:
+
+- ✅ Diagnostic workflow for analyzing prompts
+- ✅ 11 prompting techniques with when-to-use guidance
+- ✅ Common problems and fixes table
+- ✅ Role-based templates (Sales, Marketing, Ops, Management, Content, Data, L&D)
+- ✅ Quality scorecard for prompt evaluation
+- ✅ Detailed technique examples with beginner/intermediate/advanced tips
+
+**Read more**: [Prompt Engineering Plugin Documentation](./prompt-engineering/README.md)
+
+---
+
+### Data Engineering (ETL/ELT)
+
+**Status**: ✅ Available  
+**Version**: 1.0.0  
+**Category**: Data Engineering
+
+Build robust ETL/ELT pipelines with best practices for ingestion, transformation, orchestration, and troubleshooting.
+
+**Installation**:
+
+```bash
+/plugin install data-engineering@LLM-Skills
+```
+
+**What it provides**:
+
+- ✅ Source/destination evaluation checklists
+- ✅ Batch vs. streaming decision framework
+- ✅ 9 transformation patterns with SQL examples
+- ✅ 4 update patterns (overwrite, insert, upsert, delete)
+- ✅ 8 orchestration design patterns
+- ✅ Observability metrics and alerting best practices
+- ✅ Incident response and recovery procedures
+
+**Read more**: [Data Engineering Plugin Documentation](./data-engineering/README.md)
+
+---
+
 ## 🎯 Marketplace Philosophy
 
 ### First-Try Success
 
 Our skills are designed to enable Claude to generate correct code on the first attempt by:
+
 1. **Pre-generation validation** - Extract schema, verify references
 2. **Anti-pattern prevention** - Forbidden functions database
 3. **Best practice enforcement** - Industry standards from domain experts
@@ -69,6 +127,7 @@ Our skills are designed to enable Claude to generate correct code on the first a
 ### Research-Driven
 
 Every skill is backed by:
+
 - 📚 Official documentation (Microsoft, SQLBI, etc.)
 - 🔬 Real-world benchmarking and testing
 - 👥 Community best practices
@@ -77,6 +136,7 @@ Every skill is backed by:
 ### Quality Standards
 
 Skills must include:
+
 - Clear pre-generation workflow
 - Forbidden patterns with alternatives
 - Performance optimization rules
@@ -97,6 +157,7 @@ This makes all plugins in this marketplace discoverable.
 ### 2. Install Plugins
 
 **Interactive (Recommended)**:
+
 ```bash
 /plugin
 # Navigate to Discover tab
@@ -105,6 +166,7 @@ This makes all plugins in this marketplace discoverable.
 ```
 
 **Command Line**:
+
 ```bash
 /plugin install <plugin-name>@LLM-Skills
 
@@ -115,13 +177,15 @@ This makes all plugins in this marketplace discoverable.
 ### 3. Use the Skills
 
 Skills activate automatically when relevant. For example:
-```
+
+```text
 User: "Create a Year-over-Year sales growth measure in DAX"
 Claude: [Automatically uses writing-dax-measures skill]
 ```
 
 You can also explicitly invoke:
-```
+
+```text
 User: "Use the DAX skill to help me write a measure for..."
 ```
 
@@ -218,6 +282,7 @@ We welcome contributions! Here's how:
 ### Quality Requirements
 
 New skills must:
+
 - ✅ Be based on authoritative sources
 - ✅ Include pre-generation workflow
 - ✅ List forbidden patterns with alternatives
@@ -236,6 +301,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ### Research Sources
 
 Skills in this marketplace are built on research from:
+
 - **SQLBI** - DAX expertise
 - **Microsoft Learn** - Official documentation
 - **DAX Patterns** - Community patterns

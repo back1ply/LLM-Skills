@@ -18,6 +18,28 @@
       },
       "source": "./dax",
       "category": "productivity"
+    },
+    {
+      "name": "prompt-engineering",
+      "description": "Expert prompt engineering assistance using 11 foundational techniques. Write, improve, and fix prompts for ChatGPT, Claude, Gemini with proven best practices",
+      "version": "1.0.0",
+      "author": {
+        "name": "back1ply",
+        "email": "back1ply@gmail.com"
+      },
+      "source": "./prompt-engineering",
+      "category": "productivity"
+    },
+    {
+      "name": "data-engineering",
+      "description": "Build robust ETL/ELT pipelines with best practices for ingestion, transformation, orchestration, and troubleshooting",
+      "version": "1.0.0",
+      "author": {
+        "name": "back1ply",
+        "email": "back1ply@gmail.com"
+      },
+      "source": "./data-engineering",
+      "category": "data-engineering"
     }
   ]
 }

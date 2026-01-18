@@ -1,1 +1,30 @@
-.claude/settings.local.json
+# Ignore everything
+*
+
+# Except these patterns
+!.gitignore
+!.gitattributes
+!LICENSE
+!README.md
+
+# Keep top-level plugin folders
+!dax/
+!prompt-engineering/
+!data-engineering/
+
+# Keep READMEs in plugin folders
+!dax/README.md
+!prompt-engineering/README.md
+!data-engineering/README.md
+
+# Keep skills folders and all contents
+!dax/skills/
+!dax/skills/**
+!prompt-engineering/skills/
+!prompt-engineering/skills/**
+!data-engineering/skills/
+!data-engineering/skills/**
+
+# Keep plugin config
+!.claude-plugin/
+!.claude-plugin/**
