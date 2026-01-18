@@ -8,6 +8,7 @@ description: Design and implement ETL/ELT data pipelines for modern data archite
 > **Source**: Distilled from *Understanding ETL (Updated Edition)* by Matt Palmer, O'Reilly Media, August 2025. ISBN: 979-8-341-66508-8
 
 Use this skill when:
+
 - Designing data ingestion from APIs, databases, or streaming sources
 - Building transformation pipelines (batch or streaming)
 - Selecting orchestration tools or patterns
@@ -19,12 +20,15 @@ Use this skill when:
 ## Core Concepts
 
 ### ETL vs ELT
+
 - **ETL**: Transform data before loading (legacy, when storage was expensive)
 - **ELT**: Load all data first, transform downstream (modern approach — "storage is cheap")
 - Modern pipelines are typically ELT, but the term "ETL" persists
 
 ### Medallion Architecture
+
 Stage data in three quality layers:
+
 | Layer | Purpose | Example |
 |-------|---------|---------|
 | **Bronze** | Raw, unfiltered data directly from sources | API responses, raw logs |
@@ -36,6 +40,7 @@ Stage data in three quality layers:
 ## 1. Data Ingestion
 
 ### Source Evaluation Checklist
+
 For every data source, answer:
 
 | Question | Why It Matters |
@@ -49,6 +54,7 @@ For every data source, answer:
 | What's the quality? | Determines transformation needs |
 
 ### Destination Considerations
+
 - **OLAP** (BigQuery, Redshift, Snowflake, Databricks SQL): For analytics, column-oriented
 - **OLTP** (Postgres, MySQL): For transactional apps, row-oriented
 - **Lakehouse** (Delta Lake, Iceberg, Hudi): Combines lake + warehouse benefits
@@ -64,6 +70,7 @@ Is the data bounded (finite)?
 ```
 
 **Streaming Methods**:
+
 - **Fixed windows**: Data batched in fixed time intervals
 - **Sliding windows**: Overlapping time intervals
 - **Sessions**: Dynamic windows based on activity gaps
@@ -108,6 +115,7 @@ Is the data bounded (finite)?
 | **Delete** | Soft (status='deleted') or hard (remove row) | `UPDATE` or `DELETE` |
 
 ### UPSERT Example (Databricks)
+
 ```sql
 MERGE INTO people10m
 USING people10mupdates
@@ -120,6 +128,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ```
 
 ### Best Practices
+
 - **Staging**: Always stage intermediate data for recoverability
 - **Idempotency**: Running a pipeline twice should produce the same result
 - **Incrementality**: Process only new/changed data when possible
@@ -129,6 +138,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ## 3. Data Orchestration
 
 ### What Orchestrators Do
+
 - Manage dependencies between tasks (DAGs)
 - Schedule and trigger pipelines
 - Handle retries, errors, and alerts
@@ -198,6 +208,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 | **Alerting** | Notify team (avoid alert fatigue) |
 
 ### Incident Metrics
+
 - **N**: Number of incidents
 - **TTD**: Time to detection
 - **TTR**: Time to resolution
@@ -227,6 +238,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 | **Materialization** | Tables vs. views trade-offs |
 
 ### Scaling Formula
+
 ```
 Horizontal scaling = More machines/nodes
 Vertical scaling = Bigger machines/nodes

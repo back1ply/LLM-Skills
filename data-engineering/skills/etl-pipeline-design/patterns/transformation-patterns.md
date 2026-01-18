@@ -3,6 +3,7 @@
 ## Transformation Patterns
 
 ### 1. Enrichment
+
 **Purpose**: Enhance data with additional sources
 
 ```sql
@@ -18,6 +19,7 @@ JOIN status_codes s ON o.status_code = s.code
 ---
 
 ### 2. Joining
+
 **Purpose**: Combine datasets on common keys
 
 ```sql
@@ -30,6 +32,7 @@ JOIN users u ON s.user_id = u.id
 ```
 
 **Join Types**:
+
 - `INNER JOIN`: Only matching rows
 - `LEFT JOIN`: All from left + matches from right
 - `FULL OUTER JOIN`: All rows from both sides
@@ -37,6 +40,7 @@ JOIN users u ON s.user_id = u.id
 ---
 
 ### 3. Filtering
+
 **Purpose**: Select only necessary records
 
 ```sql
@@ -48,6 +52,7 @@ WHERE date >= '2025-01-01'
 ---
 
 ### 4. Structuring
+
 **Purpose**: Convert between formats
 
 ```python
@@ -61,6 +66,7 @@ df.write.format("delta").save("/delta/structured_data")
 ---
 
 ### 5. Conversion
+
 **Purpose**: Change data types
 
 ```sql
@@ -75,6 +81,7 @@ FROM events
 ---
 
 ### 6. Aggregation
+
 **Purpose**: Summarize data
 
 ```sql
@@ -91,6 +98,7 @@ GROUP BY 1, 2
 ---
 
 ### 7. Anonymization
+
 **Purpose**: Protect PII
 
 ```sql
@@ -104,6 +112,7 @@ FROM transactions
 ---
 
 ### 8. Splitting
+
 **Purpose**: Break columns into parts
 
 ```sql
@@ -117,6 +126,7 @@ FROM users
 ---
 
 ### 9. Deduplication
+
 **Purpose**: Remove redundant records
 
 ```sql
@@ -137,12 +147,14 @@ SELECT * FROM ranked WHERE rn = 1
 ## Update Patterns
 
 ### Overwrite
+
 ```sql
 TRUNCATE TABLE target_table;
 INSERT INTO target_table SELECT * FROM source;
 ```
 
 ### Insert (Append-only)
+
 ```sql
 INSERT INTO transactions
 SELECT * FROM staging_transactions
@@ -150,6 +162,7 @@ WHERE transaction_date = CURRENT_DATE;
 ```
 
 ### Upsert (MERGE)
+
 ```sql
 MERGE INTO target t
 USING source s
@@ -162,6 +175,7 @@ VALUES (s.id, s.name, CURRENT_TIMESTAMP);
 ```
 
 ### Soft Delete
+
 ```sql
 UPDATE users
 SET status = 'deleted', deleted_at = CURRENT_TIMESTAMP
@@ -169,6 +183,7 @@ WHERE user_id = 123;
 ```
 
 ### Hard Delete
+
 ```sql
 DELETE FROM users WHERE user_id = 123;
 ```

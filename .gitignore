@@ -20,6 +20,7 @@
 # Keep skills folders and all contents
 !dax/skills/
 !dax/skills/**
+dax/skills/no-calculate-dax/
 !prompt-engineering/skills/
 !prompt-engineering/skills/**
 !data-engineering/skills/

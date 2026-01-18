@@ -9,7 +9,7 @@ Help users craft effective prompts using proven techniques from Forward Future's
 
 ## Quick Start
 
-```
+```text
 1. User shares their prompt (or describes what they need)
 2. Diagnose: What's missing? (role, context, format, task clarity)
 3. Select technique(s): Which of the 11 applies best?
@@ -22,6 +22,7 @@ Help users craft effective prompts using proven techniques from Forward Future's
 ### 1. Diagnose the Prompt
 
 Check against these 6 questions:
+
 - Is task clearly defined?
 - Is there a role/persona?
 - Is input/context complete?
@@ -32,7 +33,7 @@ Check against these 6 questions:
 ### 2. Apply the Right Technique
 
 | Technique | When to Use |
-|-----------|-------------|
+| ----------- | ----------- |
 | **Zero-Shot** | Simple, obvious tasks |
 | **Few-Shot** | Need specific structure/tone/format |
 | **System Prompt** | Control behavior/format rules |
@@ -48,6 +49,7 @@ Check against these 6 questions:
 ### 3. Apply the Prompt Formula
 
 A good prompt has:
+
 - **Role**: "You are a [expert]..."
 - **Task**: Clear action verb (Summarize, List, Write, Analyze)
 - **Input**: What to work with (text, data, scenario)
@@ -56,7 +58,7 @@ A good prompt has:
 ### 4. Fix Common Problems
 
 | Problem | Fix |
-|---------|-----|
+| ------- | --- |
 | Too vague | Add specifics: "3 bullet points focusing on X" |
 | No audience | Add target: "for a busy executive" |
 | Missing role | Add persona: "You are a brand copywriter" |
@@ -97,4 +99,4 @@ A good prompt has:
 
 Based on "Humanity's Last Prompt Engineering Guide" by Matthew Berman & Nick Wentz (Forward Future).
 
-**Source:** https://www.forwardfuture.ai/p/humanity-s-last-prompt-engineering-guide
+**Source:** <https://www.forwardfuture.ai/p/humanity-s-last-prompt-engineering-guide>
