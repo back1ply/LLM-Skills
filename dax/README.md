@@ -62,7 +62,7 @@ The plugin adds the `writing-dax-measures` skill to your Claude Code instance. C
 
 Simply ask Claude to write DAX measures, and the skill will automatically activate:
 
-```
+```text
 User: "Create a YoY sales growth measure"
 Claude: [Uses writing-dax-measures skill to generate correct DAX]
 ```

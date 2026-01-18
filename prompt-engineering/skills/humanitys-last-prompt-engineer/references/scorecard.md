@@ -6,24 +6,24 @@ Tools for evaluating and refining prompts.
 
 Rate each item 1-5. Use to evaluate prompt strength before sending.
 
-| # | Question | Score (1-5) |
-|---|----------|-------------|
-| 1 | Is the task clearly defined? | ___ |
-| 2 | Did I assign a clear role or persona? | ___ |
-| 3 | Did I provide the right context or background? | ___ |
-| 4 | Did I specify a desired output format? | ___ |
-| 5 | Did I include tone, length, or constraint instructions? | ___ |
-| 6 | If applicable, did I request reasoning/step-by-step? | ___ |
-| 7 | Is the prompt clear and free of ambiguity? | ___ |
-| | **TOTAL** | ___/35 |
+| # | Question                                                 | Score (1-5) |
+| - | -------------------------------------------------------- | ----------- |
+| 1 | Is the task clearly defined?                             | ___         |
+| 2 | Did I assign a clear role or persona?                    | ___         |
+| 3 | Did I provide the right context or background?           | ___         |
+| 4 | Did I specify a desired output format?                   | ___         |
+| 5 | Did I include tone, length, or constraint instructions?  | ___         |
+| 6 | If applicable, did I request reasoning/step-by-step?     | ___         |
+| 7 | Is the prompt clear and free of ambiguity?               | ___         |
+|   | **TOTAL**                                                | ___/35      |
 
 ### Scoring Guide
 
-| Score | Interpretation |
-|-------|----------------|
-| 30-35 | Strong, high-confidence prompt |
-| 20-29 | Decent, may benefit from revisions |
-| Below 20 | Likely to produce inconsistent/unclear outputs |
+| Score    | Interpretation                                  |
+| -------- | ----------------------------------------------- |
+| 30-35    | Strong, high-confidence prompt                  |
+| 20-29    | Decent, may benefit from revisions              |
+| Below 20 | Likely to produce inconsistent/unclear outputs  |
 
 ---
 
@@ -31,7 +31,7 @@ Rate each item 1-5. Use to evaluate prompt strength before sending.
 
 Use this template to document and improve important prompts over time.
 
-```
+```text
 PROMPT NAME: ________________________________
 
 GOAL: ________________________________

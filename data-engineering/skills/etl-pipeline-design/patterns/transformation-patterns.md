@@ -193,7 +193,7 @@ DELETE FROM users WHERE user_id = 123;
 ## Best Practices
 
 | Practice | Description |
-|----------|-------------|
+| ---------- | ------------- |
 | **Staging** | Always save intermediate states for recovery |
 | **Idempotency** | Same input → same output (reruns don't duplicate) |
 | **Incrementality** | Process only new/changed data |

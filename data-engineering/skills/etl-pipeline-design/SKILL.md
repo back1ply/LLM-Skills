@@ -30,7 +30,7 @@ Use this skill when:
 Stage data in three quality layers:
 
 | Layer | Purpose | Example |
-|-------|---------|---------|
+| ------- | --------- | --------- |
 | **Bronze** | Raw, unfiltered data directly from sources | API responses, raw logs |
 | **Silver** | Cleaned, filtered, enriched | Removed duplicates, renamed columns |
 | **Gold** | Stakeholder-ready, often aggregated | Reporting tables, ML features |
@@ -44,7 +44,7 @@ Stage data in three quality layers:
 For every data source, answer:
 
 | Question | Why It Matters |
-|----------|----------------|
+| ---------- | ---------------- |
 | Who will use this data? | Aligns incentives, prioritizes work |
 | How will it be used? | Guides downstream decisions |
 | Is it bounded or unbounded? | Determines batch vs. streaming |
@@ -61,7 +61,7 @@ For every data source, answer:
 
 ### Batch vs. Streaming Decision
 
-```
+```text
 Is the data bounded (finite)?
 ├── YES → Batch processing
 └── NO (continuous/unbounded) →
@@ -78,7 +78,7 @@ Is the data bounded (finite)?
 ### Choosing Ingestion Solutions
 
 | Type | Examples | Pros | Cons |
-|------|----------|------|------|
+| ------ | ---------- | ------ | ------ |
 | **Legacy declarative** | Talend, Pentaho | Robust connectors | Outdated, not MDS-aligned |
 | **Modern declarative** | Fivetran, Airbyte, Stitch | Low maintenance, connectors | Vendor lock-in, cost |
 | **Native/Platform** | Lakeflow Connect, Glue | Integrated, managed | Platform-specific |
@@ -94,7 +94,7 @@ Is the data bounded (finite)?
 ### Transformation Patterns
 
 | Pattern | Description | Example |
-|---------|-------------|---------|
+| --------- | ------------- | --------- |
 | **Enrichment** | Add data from other sources | Join order codes → readable names |
 | **Joining** | Combine datasets on common keys | Sales + Users → add country |
 | **Filtering** | Select only needed records | `WHERE date >= '2025-01-01'` |
@@ -108,7 +108,7 @@ Is the data bounded (finite)?
 ### Update Patterns
 
 | Pattern | When to Use | SQL Concept |
-|---------|-------------|-------------|
+| --------- | ------------- | ------------- |
 | **Overwrite** | Small datasets, simple refreshes | `TRUNCATE` + `INSERT` |
 | **Insert** | Append-only data (logs, transactions) | `INSERT INTO` |
 | **Upsert** | CDC, deduplication, SCD | `MERGE` |
@@ -147,7 +147,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Orchestrator Selection Criteria
 
 | Criterion | Questions to Ask |
-|-----------|------------------|
+| ----------- | ------------------ |
 | **Scalability** | Can it handle 10x DAGs/tasks? |
 | **Reusability** | Can I create reusable components? |
 | **Connections** | Native integrations with my stack? |
@@ -157,7 +157,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Orchestrator Options
 
 | Tool | Type | Best For |
-|------|------|----------|
+| ------ | ------ | ---------- |
 | **Airflow** | Open source | Mature, widely adopted, many connectors |
 | **Dagster** | Open source | Modern, asset-based, good DX |
 | **Prefect** | Open source | Python-native, flexible |
@@ -167,7 +167,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Design Patterns
 
 | Pattern | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Backfills** | Build pipelines that can recreate historical data |
 | **Event-driven** | Trigger on data arrival, not just schedules |
 | **Conditional logic** | Branch based on conditions (if/else) |
@@ -182,7 +182,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Key Metrics
 
 | Metric | What It Measures |
-|--------|------------------|
+| -------- | ------------------ |
 | **Freshness** | Time since last update |
 | **Volume** | Row counts, data sizes |
 | **Quality** | Uniqueness, completeness, validity |
@@ -190,7 +190,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Observability Methods
 
 | Method | Purpose |
-|--------|---------|
+| -------- | --------- |
 | **Logging** | Capture execution details |
 | **Lineage** | Track data flow (column-level ideal) |
 | **Anomaly detection** | Catch unexpected data patterns |
@@ -200,7 +200,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Error Handling
 
 | Technique | Description |
-|-----------|-------------|
+| ----------- | ------------- |
 | **Retry logic** | Automatic retries with backoff |
 | **Conditional handling** | Different paths for different errors |
 | **Pipeline decomposition** | Isolate failures |
@@ -221,7 +221,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Resource Allocation
 
 | Concept | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Spot instances** | Cheaper but interruptible |
 | **On-demand** | Reliable but costly |
 | **Pooling** | Pre-warm clusters for faster starts |
@@ -231,7 +231,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 ### Optimization Techniques
 
 | Technique | Benefit |
-|-----------|---------|
+| ----------- | --------- |
 | **Incremental processing** | Only process new/changed data |
 | **Columnar storage** | Faster analytics (Parquet, Delta) |
 | **Partitioning** | Reduce data scanned |
@@ -239,7 +239,7 @@ VALUES (people10mupdates.id, people10mupdates.firstName, people10mupdates.lastNa
 
 ### Scaling Formula
 
-```
+```text
 Horizontal scaling = More machines/nodes
 Vertical scaling = Bigger machines/nodes
 ```
@@ -264,7 +264,7 @@ When designing a pipeline:
 ## Anti-Patterns to Avoid
 
 | Anti-Pattern | Why It's Bad |
-|--------------|--------------|
+| -------------- | -------------- |
 | Mixing orchestration with transformation | Orchestrator should trigger, not execute |
 | No staging layer | Hard to recover from failures |
 | Non-idempotent pipelines | Reruns cause duplicates or errors |
