@@ -4,6 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Plugin-blue.svg)](https://code.claude.com/)
+[![SkillCheck](https://img.shields.io/badge/SkillCheck-PASS-brightgreen)](https://getskillcheck.com)
 
 A curated marketplace of high-quality skills for Claude Code, focused on enabling first-attempt success in domain-specific code generation.
 
@@ -110,6 +111,32 @@ Build robust ETL/ELT pipelines with best practices for ingestion, transformation
 - ✅ Incident response and recovery procedures
 
 **Read more**: [Data Engineering Plugin Documentation](./data-engineering/README.md)
+
+---
+
+### Skill Management
+
+**Status**: ✅ Available  
+**Version**: 1.0.0  
+**Category**: Productivity
+
+Audit and optimize Claude Code skills/plugins. Find duplicates, detect overlaps, calculate token savings, and get actionable recommendations for your skill configuration.
+
+**Installation**:
+
+```bash
+/plugin install skill-management@LLM-Skills
+```
+
+**What it provides**:
+
+- ✅ Duplicate skill detection across plugins
+- ✅ Overlap analysis for similar capabilities
+- ✅ Token usage calculation and savings estimation
+- ✅ Keep/remove/add recommendations
+- ✅ Gap analysis for missing capabilities
+
+**Read more**: [Skill Management Plugin Documentation](./skill-management/README.md)
 
 ---
 
@@ -224,25 +251,6 @@ Choose where to install plugins:
 /plugin marketplace update LLM-Skills
 ```
 
-## 🌟 Roadmap
-
-### Coming Soon
-
-- **SQL Query Optimization** - Generate performant SQL with index hints
-- **React Component Patterns** - Type-safe components with best practices
-- **Python Data Analysis** - Pandas/NumPy with performance patterns
-- **Terraform Infrastructure** - AWS/Azure with security best practices
-
-### Planned Domains
-
-- TypeScript/JavaScript optimization
-- Git workflow patterns
-- API design patterns
-- Database schema design
-- CI/CD pipeline patterns
-
-**Want to contribute?** Open an issue or PR!
-
 ## 📚 Documentation
 
 ### For Users
@@ -256,41 +264,6 @@ Choose where to install plugins:
 - [Creating Plugins](https://code.claude.com/docs/en/plugins)
 - [Creating Marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)
 - [Marketplace Schema](https://anthropic.com/claude-code/marketplace.schema.json)
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how:
-
-### Suggest a New Skill
-
-1. Open an issue with:
-   - Domain/technology
-   - Key anti-patterns to avoid
-   - Performance best practices
-   - Common calculation patterns
-   - Link to authoritative sources
-
-2. We'll research and create the skill
-
-### Improve Existing Skills
-
-1. Test skills with real-world scenarios
-2. Report missing patterns or anti-patterns
-3. Submit PRs with improvements
-4. Share benchmarking results
-
-### Quality Requirements
-
-New skills must:
-
-- ✅ Be based on authoritative sources
-- ✅ Include pre-generation workflow
-- ✅ List forbidden patterns with alternatives
-- ✅ Provide performance optimization rules
-- ✅ Include common calculation patterns
-- ✅ Have quick reference tables
-- ✅ Include pre-submission validation
-- ✅ Be tested with real examples
 
 ## 📄 License
 
