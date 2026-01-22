@@ -116,11 +116,11 @@ Build robust ETL/ELT pipelines with best practices for ingestion, transformation
 
 ### Skill Management
 
-**Status**: ✅ Available  
-**Version**: 1.0.0  
+**Status**: ✅ Available
+**Version**: 1.0.0
 **Category**: Productivity
 
-Audit and optimize Claude Code skills/plugins. Find duplicates, detect overlaps, calculate token savings, and get actionable recommendations for your skill configuration.
+Audit, optimize, and discover Claude Code skills/plugins. Find duplicates, detect overlaps, search for new plugins via GitHub, and get actionable recommendations.
 
 **Installation**:
 
@@ -130,11 +130,19 @@ Audit and optimize Claude Code skills/plugins. Find duplicates, detect overlaps,
 
 **What it provides**:
 
+**skill-curator** - Audit & Optimize:
 - ✅ Duplicate skill detection across plugins
 - ✅ Overlap analysis for similar capabilities
 - ✅ Token usage calculation and savings estimation
 - ✅ Keep/remove/add recommendations
 - ✅ Gap analysis for missing capabilities
+
+**skill-finder** - Discover & Install:
+- ✅ Proactive gap detection (Claude offers to search when it lacks capabilities)
+- ✅ Web search for plugins/skills on GitHub (99% of results)
+- ✅ MCP server discovery for service integrations
+- ✅ Exact install commands with marketplace priority
+- ✅ Quality signals (stars, activity, documentation)
 
 **Read more**: [Skill Management Plugin Documentation](./skill-management/README.md)
 
