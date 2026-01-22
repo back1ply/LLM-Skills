@@ -40,6 +40,17 @@
       },
       "source": "./data-engineering",
       "category": "data-engineering"
+    },
+    {
+      "name": "skill-management",
+      "description": "Audit and optimize Claude Code skills/plugins. Find duplicates, detect overlaps, calculate token savings, and get actionable recommendations for your skill configuration",
+      "version": "1.0.0",
+      "author": {
+        "name": "back1ply",
+        "email": "back1ply@gmail.com"
+      },
+      "source": "./skill-management",
+      "category": "productivity"
     }
   ]
 }

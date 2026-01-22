@@ -11,11 +11,13 @@
 !dax/
 !prompt-engineering/
 !data-engineering/
+!skill-management/
 
 # Keep READMEs in plugin folders
 !dax/README.md
 !prompt-engineering/README.md
 !data-engineering/README.md
+!skill-management/README.md
 
 # Keep skills folders and all contents
 !dax/skills/
@@ -25,6 +27,8 @@ dax/skills/no-calculate-dax/
 !prompt-engineering/skills/**
 !data-engineering/skills/
 !data-engineering/skills/**
+!skill-management/skills/
+!skill-management/skills/**
 
 # Keep plugin config
 !.claude-plugin/
