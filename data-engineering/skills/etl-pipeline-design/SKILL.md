@@ -1,19 +1,13 @@
 ---
 name: etl-pipeline-design
-description: Design and implement ETL/ELT data pipelines for modern data architectures. Use when building data ingestion, transformation, or orchestration systems, evaluating data sources/destinations, troubleshooting pipeline issues, or optimizing data workflows for scale.
+description: This skill should be used when the user asks to "design an ETL pipeline", "build data ingestion", "set up data orchestration", "troubleshoot pipeline issues", "optimize data workflows", or mentions ELT, medallion architecture, batch vs streaming, or data transformation patterns.
 ---
 
 # ETL Pipeline Design Skill
 
 > **Source**: Distilled from *Understanding ETL (Updated Edition)* by Matt Palmer, O'Reilly Media, August 2025. ISBN: 979-8-341-66508-8
 
-Use this skill when:
-
-- Designing data ingestion from APIs, databases, or streaming sources
-- Building transformation pipelines (batch or streaming)
-- Selecting orchestration tools or patterns
-- Troubleshooting pipeline failures or data quality issues
-- Optimizing pipelines for efficiency and scale
+Applicable when designing data ingestion from APIs, databases, or streaming sources; building transformation pipelines (batch or streaming); selecting orchestration tools or patterns; troubleshooting pipeline failures or data quality issues; or optimizing pipelines for efficiency and scale.
 
 ---
 
@@ -271,3 +265,14 @@ When designing a pipeline:
 | Ignoring lineage | Impossible to debug data issues |
 | Alert fatigue | Too many alerts = ignored alerts |
 | GUI-only tooling | No version control, hard to collaborate |
+
+---
+
+## Reference Files
+
+For detailed patterns and extended guidance, consult:
+
+- **`patterns/transformation-patterns.md`** — Detailed transformation pattern catalog with examples
+- **`patterns/orchestration-patterns.md`** — Advanced orchestration design patterns and DAG strategies
+- **`troubleshooting/observability-guide.md`** — Comprehensive observability setup, monitoring, and incident response
+- **`checklists/evaluation-checklists.md`** — Pipeline evaluation checklists for design reviews and production readiness

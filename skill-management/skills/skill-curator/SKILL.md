@@ -1,6 +1,6 @@
 ---
 name: skill-curator
-description: Audit and optimize AI assistant skills across any platform. Use when user wants to review installed skills, find duplicates, detect overlaps, identify gaps, optimize for efficiency, or troubleshoot skill conflicts. Supports Gemini, Claude, Cursor, Copilot, Windsurf, and custom setups.
+description: This skill should be used when the user asks to "review installed skills", "find duplicates", "detect skill overlaps", "identify skill gaps", "optimize skills", "audit my skills", or "troubleshoot skill conflicts". Supports Gemini, Claude Code, Cursor, Copilot, Windsurf, and custom setups.
 ---
 
 # Skill Curator
@@ -10,7 +10,7 @@ A comprehensive skill auditing system for AI coding assistants. Automatically di
 ## Supported Platforms
 
 | Platform | Skill Locations | Config Format |
-| ---------- | ----------------- | --------------- |
+|----------|-----------------|---------------|
 | **Gemini/Antigravity** | `.agent/skills/`, MCP servers | `SKILL.md` + JSON |
 | **Claude Code** | `.claude/`, plugins, `CLAUDE.md` | Markdown + JSON |
 | **Cursor** | `.cursor/rules/`, `.cursorrules` | Markdown |
@@ -22,75 +22,31 @@ A comprehensive skill auditing system for AI coding assistants. Automatically di
 
 ## Marketplace Preference Hierarchy (Claude Code)
 
-When analyzing Claude Code plugins, **always prefer official sources** over third-party alternatives. Use this priority order:
-
-### Priority Order
+When analyzing Claude Code plugins, always prefer official sources over third-party alternatives.
 
 | Priority | Type | Source | Trust Level |
 |----------|------|--------|-------------|
-| 🥇 **1. Official** | Made by Anthropic | `@claude-plugins-official` | Highest |
-| 🥈 **2. Endorsed** | Third-party in official marketplace | Listed in `marketplace.json` | High |
-| 🥉 **3. External** | Third-party marketplaces | Other `@marketplace` sources | Medium |
-| 4️⃣ **4. Custom** | User's own plugins | Local/personal repos | User-managed |
+| 1. Official | Made by Anthropic | `@claude-plugins-official` | Highest |
+| 2. Endorsed | Third-party in official marketplace | Listed in `marketplace.json` | High |
+| 3. External | Third-party marketplaces | Other `@marketplace` sources | Medium |
+| 4. Custom | User's own plugins | Local/personal repos | User-managed |
 
-### How to Identify Plugin Source
+**Preference Rules:**
 
-Parse the plugin identifier format: `plugin-name@marketplace-name`
+1. If official alternative exists, recommend replacing external with official
+2. If endorsed alternative exists, recommend replacing external with endorsed
+3. If duplicate across marketplaces, keep the higher-priority source
+4. If no official/endorsed equivalent, keep external (note it in report)
 
-```text
-pr-review-toolkit@claude-plugins-official  → Official (Anthropic-made)
-superpowers@claude-plugins-official        → Endorsed (third-party, in official)
-python-dev@some-other-marketplace          → External (third-party marketplace)
-my-skill@my-repo                           → Custom (user's own)
-```
+Fetch the authoritative list from: `https://raw.githubusercontent.com/anthropics/claude-plugins-official/main/.claude-plugin/marketplace.json`
 
-### Official Marketplace Reference
-
-Fetch the authoritative list from:
-```
-https://raw.githubusercontent.com/anthropics/claude-plugins-official/main/.claude-plugin/marketplace.json
-```
-
-**Identifying Official vs Endorsed:**
-- **Official:** `author.name` = "Anthropic" AND `author.email` = "support@anthropic.com"
-- **Endorsed:** Listed in marketplace but author is NOT Anthropic
-
-### Preference Rules
-
-1. **If official alternative exists** → Recommend replacing external with official
-2. **If endorsed alternative exists** → Recommend replacing external with endorsed
-3. **If duplicate across marketplaces** → Keep the higher-priority source
-4. **If no official/endorsed equivalent** → Keep external (note it in report)
-
-### Overlap Resolution by Source
-
-When two plugins have overlapping capabilities:
-
-| Scenario | Action |
-|----------|--------|
-| Official vs External (same capability) | **Remove external**, keep official |
-| Endorsed vs External (same capability) | **Remove external**, keep endorsed |
-| Official vs Endorsed (same capability) | Keep official (unless endorsed is clearly superior) |
-| External vs Custom (same capability) | User choice (ask or keep custom) |
-
-### Example Analysis Output
-
-```markdown
-## 🏪 Marketplace Analysis
-
-| Plugin | Current Source | Better Alternative | Action |
-|--------|----------------|-------------------|--------|
-| dev-browser | dev-browser-marketplace | playwright@claude-plugins-official | ⬆️ Replace |
-| superpowers | superpowers-marketplace | superpowers@claude-plugins-official | ⬆️ Replace |
-| python-dev | claude-code-workflows | (none - unique) | ✅ Keep |
-| ui-ux-pro-max | ui-ux-pro-max-skill | (none - unique) | ✅ Keep |
-```
+For full marketplace listings, identification methods, and overlap resolution rules, see **`references/marketplace-reference.md`**.
 
 ---
 
 ## Phase 0: Quick Start Mode
 
-Choose analysis depth:
+Offer analysis depth at the start:
 
 ```text
 Quick or Full Analysis?
@@ -101,57 +57,29 @@ Quick or Full Analysis?
 
 ### Quick Mode: Auto-Profile from Workspace
 
-Instead of asking questions, detect automatically:
+Detect automatically instead of asking questions:
 
 | Detection | Files to Check | Inference |
-| ----------- | ---------------- | ----------- |
+|-----------|----------------|-----------|
 | **Tech Stack** | `package.json`, `requirements.txt`, `*.csproj`, `go.mod`, `Cargo.toml` | Primary language/framework |
 | **Workflow** | `.github/`, `.gitlab-ci.yml`, `CODEOWNERS` | Solo vs team indicators |
 | **Priority** | Existing skill categories | Security skills = security priority |
 | **Platform** | `.agent/`, `.claude/`, `.cursor/` | AI assistant in use |
 
-**Quick Mode Weights:**
-
-- Relevance: 35% (based on detected stack match)
-- Uniqueness: 25%
-- Quality: 20%
-- Efficiency: 15%
-- Usage: 5% (estimated from activation triggers)
+**Quick Mode Weights:** Relevance 35%, Uniqueness 25%, Quality 20%, Efficiency 15%, Usage 5%
 
 ---
 
 ## Phase 1: User Profile Discovery
 
-> Skip this in Quick mode
+> Skip in Quick mode.
 
-Ask these questions to personalize recommendations:
+Gather these four data points to personalize recommendations:
 
-```markdown
-## Quick Profile
-
-1. **Tech Stack:** What languages/frameworks do you primarily use?
-   - Examples: Python/FastAPI, TypeScript/React, Go, Rust, etc.
-
-2. **Workflow Type:** How do you work?
-   - [ ] Solo developer
-   - [ ] Small team (2-5)
-   - [ ] Large team / Enterprise
-
-3. **AI Usage Priorities:** Rank 1-3 (1 = highest)
-   - [ ] Speed (get things done fast)
-   - [ ] Quality (thorough reviews, best practices)
-   - [ ] Security (vulnerability detection, compliance)
-
-4. **Primary Use Cases:** What do you use AI assistance for most?
-   - [ ] Writing new code
-   - [ ] Code review / refactoring
-   - [ ] Debugging
-   - [ ] Testing
-   - [ ] Documentation
-   - [ ] Planning / Architecture
-```
-
-Store this profile mentally to personalize all recommendations.
+1. **Tech Stack** — Primary languages/frameworks (Python/FastAPI, TypeScript/React, Go, Rust, etc.)
+2. **Workflow Type** — Solo developer, small team (2-5), or large team/enterprise
+3. **AI Usage Priorities** — Rank: Speed, Quality, Security
+4. **Primary Use Cases** — Writing code, code review, debugging, testing, documentation, planning
 
 ---
 
@@ -162,643 +90,87 @@ Store this profile mentally to personalize all recommendations.
 Check for platform indicators in this order:
 
 ```text
-1. .agent/skills/     → Gemini/Antigravity
-2. .claude/           → Claude Code
-3. .cursor/           → Cursor
-4. .github/copilot-*  → GitHub Copilot
-5. .windsurfrules     → Windsurf
-6. Ask user           → Custom/Unknown
+1. .agent/skills/     -> Gemini/Antigravity
+2. .claude/           -> Claude Code
+3. .cursor/           -> Cursor
+4. .github/copilot-*  -> GitHub Copilot
+5. .windsurfrules     -> Windsurf
+6. Ask user           -> Custom/Unknown
 ```
 
 ### Step 2: Scan Skill Directories
 
 Execute discovery based on detected platform:
 
-**For Gemini/Antigravity:**
+**Gemini/Antigravity:** Scan `.agent/skills/**/SKILL.md`, check MCP server configurations, parse each SKILL.md frontmatter.
 
-```text
-- Scan: .agent/skills/**/SKILL.md
-- Check: MCP server configurations
-- Parse: Each SKILL.md frontmatter (name, description)
-```
+**Claude Code:** Scan `.claude/settings.json` for plugins, check `CLAUDE.md` files, parse plugin manifests, fetch official `marketplace.json` for source classification, classify each plugin as Official/Endorsed/External/Custom.
 
-**For Claude Code:**
+**Cursor:** Scan `.cursor/rules/*.md` and `.cursorrules` in project root.
 
-```text
-- Scan: .claude/settings.json for plugins
-- Check: CLAUDE.md files in project roots
-- Parse: Plugin manifests and skill definitions
-- Fetch: Official marketplace.json for source classification
-- Classify: Each plugin as Official/Endorsed/External/Custom
-```
-
-**Marketplace Classification Steps:**
-
-1. Parse `plugin-name@marketplace-name` from settings.json
-2. Fetch `https://raw.githubusercontent.com/anthropics/claude-plugins-official/main/.claude-plugin/marketplace.json`
-3. For each plugin, determine:
-   - If `@claude-plugins-official` AND author is Anthropic → **Official**
-   - If `@claude-plugins-official` AND author is NOT Anthropic → **Endorsed**
-   - If `@other-marketplace` → **External**
-   - If `@user-repo` or local → **Custom**
-4. Flag external plugins that have official/endorsed equivalents
-
-**For Cursor:**
-
-```text
-- Scan: .cursor/rules/*.md
-- Check: .cursorrules in project root
-- Parse: Rule definitions and contexts
-```
-
-**For Copilot/Windsurf:**
-
-```text
-- Scan: Instruction files in standard locations
-- Parse: Markdown content for capability definitions
-```
+**Copilot/Windsurf:** Scan instruction files in standard locations, parse markdown content for capability definitions.
 
 ### Step 3: Build Skill Inventory
 
-Create a structured inventory:
-
 ```markdown
 | # | Skill Name | Source | Description | Est. Tokens |
-| --- | ------------ | -------- | ------------- | ------------- |
+|---|------------|--------|-------------|-------------|
 | 1 | skill-name | path   | description | ~500        |
 ```
 
 ---
 
-## Phase 2.5: Deep Skill Analysis
+## Analysis Phases
 
-Go beyond frontmatter—read the full skill content:
+After discovery, run these analysis phases in order:
 
-### Extraction Targets
+1. **Deep Skill Analysis** — Read full skill content, extract trigger keywords, anti-patterns, dependencies, token estimates, and complexity scores
+2. **Semantic Similarity** — Extract capability signatures (`[Actions] x [Domains]`), detect overlaps (exact duplicate, superset, partial, complementary), group by semantic category
+3. **Conflict Detection** — Find contradictions between skills (opposing rules, style clashes, trigger conflicts, version conflicts)
+4. **Weighted Scoring** — Calculate composite score per skill: Relevance (30%), Uniqueness (25%), Quality (20%), Efficiency (15%), Usage (10%)
+5. **Dependency Mapping** — Map requires/enhances/conflicts/MCP relationships, identify orphans, critical nodes, broken dependencies
 
-| Extraction | How to Find | Purpose |
-| ------------ | ------------- | --------- |
-| **Trigger Keywords** | "When to Use", "Use when", "Use this skill" sections | Better activation matching |
-| **Anti-Patterns** | "Never", "Don't", "Avoid", "Forbidden" sections | Conflict detection |
-| **Dependencies** | Tool references, MCP mentions, "Requires" statements | Dependency graph |
-| **Token Estimate** | `character_count ÷ 4` | Accurate context sizing |
-| **Complexity Score** | Count of phases, sections, rules, tables | Maintenance burden |
-| **Examples Count** | Number of code blocks | Quality indicator |
+For detailed methodology, scoring tables, and detection methods, see **`references/analysis-methodology.md`**.
 
-### Complexity Scoring
-
-| Metric | Low (1-3) | Medium (4-6) | High (7-10) |
-| -------- | ----------- | -------------- | ------------- |
-| **Phases/Sections** | 1-2 | 3-5 | 6+ |
-| **Rules Count** | 1-3 | 4-8 | 9+ |
-| **Code Examples** | 0-1 | 2-4 | 5+ |
-| **Total Lines** | <100 | 100-300 | 300+ |
+For the standard report output template, see **`references/report-template.md`**.
 
 ---
 
-## Phase 3: Semantic Similarity Analysis
-
-### Capability Extraction
-
-For each skill, extract:
-
-1. **Actions (Verbs):** What does it DO?
-   - `review`, `generate`, `test`, `plan`, `debug`, `refactor`, `document`
-
-2. **Domains (Nouns):** What does it OPERATE ON?
-   - `code`, `tests`, `git`, `docs`, `architecture`, `security`, `performance`
-
-3. **Capability Signature:** `[Actions] × [Domains]`
-   - Example: `code-reviewer` → `[review] × [code]`
-   - Example: `test-generator` → `[generate] × [tests]`
-
-### Overlap Detection Matrix
-
-Compare capability signatures:
-
-| Overlap Type | Definition | Action |
-| -------------- | ------------ | -------- |
-| **Exact Duplicate** | Same actions AND same domains | Remove one |
-| **Superset** | Skill A covers all of Skill B + more | Consider removing B |
-| **Partial Overlap** | Some shared capabilities | Evaluate which is better |
-| **Complementary** | Different actions OR different domains | Keep both |
-
-### Semantic Grouping
-
-Group skills by primary purpose:
-
-| Category | Typical Actions | Typical Domains |
-| ---------- | ----------------- | -------------------- |
-| **Code Quality** | review, refactor, lint | code, style |
-| **Testing** | generate, run, validate | tests, coverage |
-| **Git/VCS** | commit, branch, merge | git, pr |
-| **Planning** | plan, design, architect | architecture, tasks |
-| **Documentation** | document, explain, summarize | docs, comments |
-| **Security** | audit, scan, validate | security, auth |
-
----
-
-## Phase 3.5: Conflict Detection
-
-Beyond overlaps, detect **contradictions** between skills:
-
-### Conflict Types
-
-| Conflict Type | Example | Severity |
-| --------------- | --------- | ---------- |
-| **Opposing Rules** | Skill A: "Always use IFERROR" vs Skill B: "Never use IFERROR" | 🔴 High |
-| **Style Clashes** | Skill A: "Use snake_case" vs Skill B: "Use camelCase" | 🟡 Medium |
-| **Trigger Conflicts** | Both skills claim same activation phrase | 🟠 Medium |
-| **Version Conflicts** | Skill A targets Node 18, Skill B requires Node 20 | 🟡 Medium |
-
-### Detection Method
-
-1. **Extract Rules:** Find all `ALWAYS`, `NEVER`, `MUST`, `DON'T`, `FORBIDDEN` statements
-2. **Normalize Targets:** Extract the subject of each rule (function names, patterns, tools)
-3. **Compare Polarity:** Match `ALWAYS X` against `NEVER X` patterns
-4. **Score Confidence:** Higher confidence for explicit contradictions
-
-### Conflict Report
-
-```markdown
-## ⚠️ Conflicts Detected
-
-| Skills | Conflict | Severity | Resolution |
-| -------- | ---------- | ---------- | ------------ |
-| A ↔ B | A says "Always X", B says "Never X" | 🔴 High | Remove one or add scope limits |
-```
-
----
-
-## Phase 4: Weighted Scoring System
-
-Calculate a composite score for each skill:
-
-### Scoring Factors
-
-| Factor | Weight | Score 0-10 | How to Assess |
-| -------- | -------- | ------------ | --------------- |
-| **Relevance** | 30% | 0-10 | Match to user's tech stack |
-| **Uniqueness** | 25% | 0-10 | No other skill provides this |
-| **Quality** | 20% | 0-10 | Docs, examples, maintenance |
-| **Efficiency** | 15% | 0-10 | Value per token |
-| **Usage** | 10% | 0-10 | How often it's activated |
-
-### Score Calculation
-
-```text
-Final Score = (Relevance × 0.30) + (Uniqueness × 0.25) + 
-              (Quality × 0.20) + (Efficiency × 0.15) + (Usage × 0.10)
-```
-
-### Health Indicators
-
-Add health metrics beyond scoring:
-
-| Metric | Score 0-10 | Assessment Method |
-| -------- | ------------ | ------------------- |
-| **Freshness** | 10 = <30 days old, 0 = >1 year | File modification date |
-| **Completeness** | 10 = all sections, 0 = bare | Has examples, rules, anti-patterns |
-| **Specificity** | 10 = focused, 0 = too broad | Single clear purpose vs kitchen sink |
-| **Testability** | 10 = clear success criteria | Has verification/validation steps |
-
-### Recommendation Tiers
-
-| Score | Tier | Recommendation |
-| ------- | ------ | ---------------- |
-| 8-10 | 🟢 **Essential** | Keep - high value |
-| 6-7.9 | 🟡 **Useful** | Keep unless cleanup needed |
-| 4-5.9 | 🟠 **Marginal** | Consider removing |
-| 0-3.9 | 🔴 **Remove** | Low value, remove |
-
----
-
-## Phase 5: Analysis Output
-
-Generate a comprehensive report:
-
-```markdown
-## 📊 Skill Inventory
-
-- **Platform Detected:** [Platform Name]
-- **Total Skills Found:** X
-- **Estimated Token Overhead:** ~Y tokens
-- **Marketplaces Used:** X (list them)
-
----
-
-## 👤 User Profile Summary
-
-- **Stack:** [Languages/Frameworks]
-- **Workflow:** [Solo/Team/Enterprise]
-- **Priority:** [Speed/Quality/Security]
-
----
-
-## 🏪 Marketplace Analysis (Claude Code)
-
-| Plugin | Current Source | Type | Better Alternative | Action |
-|--------|----------------|------|-------------------|--------|
-| name | marketplace | Official/Endorsed/External/Custom | alternative or (none) | ⬆️/✅ |
-
-**Legend:**
-- 🥇 Official = Made by Anthropic
-- 🥈 Endorsed = Third-party in official marketplace
-- 🥉 External = Third-party marketplace
-- 4️⃣ Custom = User's own
-
-**Marketplace Cleanup Commands:**
-```bash
-# Replace external with official/endorsed
-/plugin uninstall plugin-name@external-marketplace
-/plugin install plugin-name@claude-plugins-official
-
-# Remove redundant marketplace (if empty after cleanup)
-/plugin marketplace remove marketplace-name
-```
-
----
-
-## 🔴 Duplicates & Overlaps
-
-| Skills | Overlap Type | Recommendation | Token Savings |
-| -------- | -------------- | ---------------- | --------------- |
-| A, B   | Exact        | Remove B       | ~300          |
-
----
-
-## ⚠️ Conflicts
-
-| Skills | Issue | Severity | Action |
-| -------- | ------- | ---------- | -------- |
-| A ↔ B  | Opposing rules on X | 🔴 High | Review |
-
----
-
-## 🏥 Health Report
-
-| Skill | Fresh | Complete | Specific | Testable | Health |
-| ------- | ------- | ---------- | ---------- | ---------- | -------- |
-| name  | 8     | 6        | 9        | 4        | 🟡 6.8 |
-
----
-
-## 📈 Skill Scores
-
-| Skill | Rel | Uniq | Qual | Eff | Use | **Score** | Tier |
-| -------- | ----- | ------ | ------ | ----- | ----- | ----------- | ------ |
-| name  | 8   | 9    | 7    | 6   | 8   | **7.6**   | 🟡   |
-
----
-
-## 💡 Recommendations
-
-### Remove (🔴 Low Value)
-1. `skill-name` — Reason → saves ~X tokens
-
-### Consider Removing (🟠 Marginal)
-1. `skill-name` — Reason
-
-### Keep (🟢🟡 Valuable)
-1. `skill-name` — Why it's valuable
-
-### Gaps Identified
-1. Missing capability → Suggested skill to add
-
----
-
-## 📉 Summary
-
-- **Before:** X skills, ~Y tokens
-- **After:** X skills, ~Y tokens
-- **Savings:** Z tokens (N% reduction)
-```
-
----
-
-## Phase 5.5: Dependency Mapping
-
-Map relationships between skills:
-
-### Dependency Types
-
-| Type | Indicator | Example |
-| ------ | ----------- | --------- |
-| **Requires** | Skill mentions another by name | "Use the X skill first" |
-| **Enhances** | Skill extends another's capability | "After code review, use this for..." |
-| **Conflicts** | Mutually exclusive usage | "Don't use with skill Y" |
-| **MCP Dependency** | Requires specific MCP server | "Requires powerbi-desktop-mcp" |
-
-### Visual Dependency Graph
-
-```text
-┌─────────────────┐
-│ skill-curator   │
-└────────┬────────┘
-         │ enhances
-         ▼
-┌─────────────────┐     ┌─────────────────┐
-│ writing-dax     │ ◄── │ no-calculate-dax│
-└─────────────────┘     └─────────────────┘
-         │ requires MCP
-         ▼
-┌─────────────────┐
-│ powerbi-mcp     │
-└─────────────────┘
-```
-
-### Dependency Insights
-
-| Status | Meaning | Action |
-| -------- | --------- | -------- |
-| **Orphan** | No dependencies, not depended on | Safe to remove if low value |
-| **Critical** | Many skills depend on this | Careful before removing |
-| **Broken** | Depends on missing skill/MCP | Fix or remove |
-| **Circular** | A → B → A | Refactor to break cycle |
-
----
-
-## Phase 6: Actionable Outputs
-
-### Backup Commands
-
-Before making changes, backup current configuration:
-
-**Gemini/Antigravity:**
-
-```bash
-cp -r .agent/skills .agent/skills.backup.$(date +%Y%m%d)
-```
-
-**Claude Code:**
-
-```bash
-cp -r .claude .claude.backup.$(date +%Y%m%d)
-```
-
-**Cursor:**
-
-```bash
-cp -r .cursor/rules .cursor/rules.backup.$(date +%Y%m%d)
-```
-
-### Auto-Consolidation Suggestions
-
-When two skills have >70% capability overlap, offer a merge:
-
-```markdown
-🔀 **Merge Suggestion:** skill-a + skill-b → skill-combined
-
-**Shared Capabilities:**
-- [capability 1]
-- [capability 2]
-
-**Unique to A:**
-- [capability 3]
-
-**Unique to B:**
-- [capability 4]
-
-**Proposed Action:** Generate merged SKILL.md draft
-**Token Savings:** ~500 (30% reduction)
-```
-
-### Removal Commands
-
-Provide exact commands for each removal:
-
-```bash
-# Remove skill: [skill-name]
-rm -rf .agent/skills/[skill-name]
-
-# Or for single-file skills:
-rm .cursor/rules/[rule-name].md
-```
-
-### Installation Commands
-
-For recommended additions:
-
-**Gemini (via MCP skill-loader):**
-
-```text
-Use mcp_agent-skill-loader_install_skill with skill_name: "[skill-name]"
-```
-
-**Claude Code:**
-
-```bash
-claude plugins add [plugin-name]
-```
-
-**Manual:**
-
-```bash
-# Create skill directory
-mkdir -p .agent/skills/[skill-name]
-# Then create SKILL.md with appropriate content
-```
-
-### Verification Steps
-
-After changes:
-
-```text
-1. List skills to confirm changes took effect
-2. Test a sample prompt that would trigger the skill
-3. Verify no errors in AI assistant startup
-4. Confirm token reduction in context usage (if measurable)
-```
-
----
-
-## Important Rules
-
-1. **ALWAYS** offer Quick vs Full mode at start
-2. **ALWAYS** use automated discovery — don't ask users to paste config
-3. **ALWAYS** calculate semantic overlap, not just name matching
-4. **ALWAYS** check for conflicts between skill rules
-5. **ALWAYS** provide weighted scores with justification
-6. **ALWAYS** give exact commands, not vague instructions
-7. **ALWAYS** show dependency relationships for critical skills
-8. **NEVER** recommend removing a skill without understanding user's workflow
-9. **NEVER** assume platform — detect or ask
-10. **ASK** about tech stack before stack-specific recommendations
-11. **PRIORITIZE** removing high-token duplicates over low-token unique skills
-12. **CONSIDER** that some overlap is intentional (tiered tools for contexts)
-13. **PREFER** official/endorsed plugins over external alternatives (Claude Code)
-14. **FETCH** the official marketplace.json to identify endorsed plugins
-15. **RECOMMEND** replacing external plugins when official/endorsed equivalent exists
+## Operational Rules
+
+- Offer Quick vs Full mode at the start of every audit
+- Use automated discovery — never ask users to paste configuration
+- Calculate semantic overlap, not just name matching
+- Check for conflicts between skill rules
+- Provide weighted scores with justification
+- Give exact commands, not vague instructions
+- Show dependency relationships for critical skills
+- Never recommend removing a skill without understanding the user's workflow
+- Never assume platform — detect or ask
+- Ask about tech stack before stack-specific recommendations
+- Prioritize removing high-token duplicates over low-token unique skills
+- Consider that some overlap is intentional (tiered tools for different contexts)
+- Prefer official/endorsed plugins over external alternatives (Claude Code)
+- Fetch the official marketplace.json to identify endorsed plugins
+- Recommend replacing external plugins when official/endorsed equivalent exists
 
 ---
 
 ## Example Workflow
 
-**Scenario:** User on Gemini with Python/FastAPI stack, solo developer, quality-focused
+**Scenario:** Gemini user, Python/FastAPI stack, solo developer, quality-focused
 
-**Discovery finds:**
+**Discovery finds:** 3 code review skills (similar), 2 Python skills (both relevant), 1 JavaScript testing skill (wrong stack), 1 planning skill (unique)
 
-- 3 code review skills (similar capabilities)
-- 2 Python skills (both relevant)
-- 1 JavaScript testing skill (wrong stack)
-- 1 planning skill (unique)
-
-**Analysis:**
-
-| Skill | Rel | Uniq | Qual | Eff | Use | Score | Health | Action |
-| ------- | ----- | ------ | ------ | ----- | ----- | ------- | -------- | -------- |
-| code-review-pro | 9 | 3 | 8 | 7 | 9 | **7.0** | 🟢 8.5 | 🟡 Keep (best of 3) |
-| code-review-lite | 9 | 2 | 5 | 8 | 3 | **5.3** | 🟡 6.0 | 🟠 Remove (subset) |
-| code-review-basic | 9 | 2 | 4 | 9 | 2 | **4.9** | 🔴 4.0 | 🔴 Remove (subset) |
-| python-expert | 10 | 8 | 9 | 7 | 8 | **8.6** | 🟢 9.0 | 🟢 Keep |
-| python-tips | 10 | 4 | 6 | 8 | 5 | **6.7** | 🟡 7.0 | 🟡 Keep (complementary) |
-| js-testing | 2 | 7 | 7 | 6 | 1 | **4.3** | 🟡 6.5 | 🔴 Remove (wrong stack) |
-| planning-system | 9 | 10 | 8 | 6 | 7 | **8.3** | 🟢 8.0 | 🟢 Keep |
-
-**Conflicts Found:**
-
-- None detected ✅
-
-**Result:** Remove 3 skills, save ~800 tokens, 43% reduction
+**Result:** Remove 3 skills (2 duplicate code reviewers + wrong-stack JS skill), save ~800 tokens, 43% reduction. Keep best code reviewer, both Python skills (complementary), and unique planning skill.
 
 ---
 
-## Appendix: Skill Portfolio Templates
+## Reference Files
 
-Recommend skill sets based on user profile:
+For detailed methodology, templates, and extended references:
 
-### Python Data Scientist
-
-| Category | Recommended Skills |
-| ---------- | ------------------- |
-| Core | python-expert, jupyter-notebooks |
-| Quality | code-review, testing-patterns |
-| Data | etl-pipeline-design, data-validation |
-| ML | experiment-tracking, model-deployment |
-| **Estimated Token Budget** | ~3000 tokens |
-
-### TypeScript Full-Stack
-
-| Category | Recommended Skills |
-| ---------- | ------------------- |
-| Core | typescript-expert, react-patterns |
-| Quality | code-review, testing-patterns |
-| API | rest-api-design, graphql-patterns |
-| Infra | docker-compose, kubernetes-basics |
-| **Estimated Token Budget** | ~3500 tokens |
-
-### Power BI / DAX Developer
-
-| Category | Recommended Skills |
-| ---------- | ------------------- |
-| Core | writing-dax-measures, no-calculate-dax |
-| Data | etl-pipeline-design |
-| Quality | code-review |
-| Prompting | humanitys-last-prompt-engineer |
-| **Estimated Token Budget** | ~2500 tokens |
-
-### DevOps / Platform Engineer
-
-| Category | Recommended Skills |
-| ---------- | ------------------- |
-| Core | infrastructure-as-code, kubernetes-patterns |
-| Quality | code-review, security-scanning |
-| CI/CD | pipeline-design, deployment-strategies |
-| Monitoring | observability-patterns, incident-response |
-| **Estimated Token Budget** | ~3000 tokens |
-
-### Solo Generalist
-
-| Category | Recommended Skills |
-| ---------- | ------------------- |
-| Core | code-review, testing-patterns |
-| Planning | planning-system, architecture-design |
-| Docs | documentation-generator |
-| Prompting | humanitys-last-prompt-engineer |
-| Meta | skill-curator |
-| **Estimated Token Budget** | ~2000 tokens |
-
----
-
-## Appendix: Claude Code Official Marketplace Reference
-
-> **Source:** `https://github.com/anthropics/claude-plugins-official`
-> **Always fetch fresh data** — this list may be outdated
-
-### 🥇 Official Plugins (Made by Anthropic)
-
-| Plugin | Category | Purpose |
-|--------|----------|---------|
-| typescript-lsp | LSP | TypeScript/JavaScript code intelligence |
-| pyright-lsp | LSP | Python type checking |
-| csharp-lsp | LSP | C# code intelligence |
-| gopls-lsp | LSP | Go code intelligence |
-| rust-analyzer-lsp | LSP | Rust code analysis |
-| clangd-lsp | LSP | C/C++ code intelligence |
-| php-lsp | LSP | PHP (Intelephense) |
-| swift-lsp | LSP | Swift (SourceKit-LSP) |
-| kotlin-lsp | LSP | Kotlin code intelligence |
-| jdtls-lsp | LSP | Java (Eclipse JDT.LS) |
-| lua-lsp | LSP | Lua code intelligence |
-| pr-review-toolkit | Productivity | 6 specialized PR review agents |
-| commit-commands | Productivity | Git commit/push/PR workflow |
-| feature-dev | Development | Exploration + architecture agents |
-| code-review | Productivity | Automated PR review |
-| code-simplifier | Productivity | Code refinement |
-| frontend-design | Development | Bold UI design |
-| plugin-dev | Development | Plugin creation toolkit |
-| claude-code-setup | Productivity | Codebase analysis |
-| claude-md-management | Productivity | CLAUDE.md maintenance |
-| security-guidance | Security | Security warnings |
-| hookify | Productivity | Custom hooks via markdown |
-| ralph-loop | Development | Iterative AI loops |
-| agent-sdk-dev | Development | Agent SDK development |
-| explanatory-output-style | Learning | Educational insights |
-| learning-output-style | Learning | Interactive learning |
-
-### 🥈 Endorsed Plugins (Third-party in Official Marketplace)
-
-| Plugin | Category | Purpose | Author |
-|--------|----------|---------|--------|
-| superpowers | Development | TDD, debugging, brainstorming, subagent dev | Jesse Vincent |
-| context7 | Development | Up-to-date documentation lookup | Upstash |
-| serena | Development | Semantic code analysis | Community |
-| playwright | Testing | Browser automation | Microsoft |
-| github | Productivity | GitHub API integration | GitHub |
-| gitlab | Productivity | GitLab integration | GitLab |
-| supabase | Database | Database/auth/storage | Supabase |
-| firebase | Database | Google Firebase | Google |
-| stripe | Development | Payments integration | Stripe |
-| figma | Design | Design file integration | Figma |
-| linear | Productivity | Issue tracking | Linear |
-| asana | Productivity | Project management | Asana |
-| atlassian | Productivity | Jira/Confluence | Atlassian |
-| slack | Productivity | Team communication | Slack |
-| notion | Productivity | Documentation | Notion |
-| sentry | Monitoring | Error monitoring | Sentry |
-| vercel | Deployment | Frontend deployment | Vercel |
-| pinecone | Database | Vector database | Pinecone |
-| greptile | Development | AI codebase search | Greptile |
-| huggingface-skills | Development | ML models/datasets | HuggingFace |
-| circleback | Productivity | Meeting/email context | Circleback |
-| laravel-boost | Development | Laravel toolkit | Community |
-
-### Quick Lookup: Finding Replacements
-
-| If you have... | Replace with... |
-|----------------|-----------------|
-| Any `*-browser` automation | `playwright@claude-plugins-official` |
-| Any `superpowers` from external | `superpowers@claude-plugins-official` |
-| Any docs lookup tool | `context7@claude-plugins-official` |
-| Any code review tool | `pr-review-toolkit@claude-plugins-official` |
-| Any git workflow tool | `commit-commands@claude-plugins-official` |
-
-### No Official Alternative (Keep External)
-
-These capabilities have **no official equivalent** — external plugins are acceptable:
-
-- Advanced Python frameworks (Django/FastAPI agents)
-- Data engineering patterns (Spark, dbt, Airflow)
-- Comprehensive UI/UX design databases
-- Business analytics / KPI dashboards
-- Domain-specific skills (DAX, Power BI, etc.)
+- **`references/analysis-methodology.md`** — Deep analysis, semantic similarity, conflict detection, weighted scoring, and dependency mapping methodology
+- **`references/report-template.md`** — Standard audit report template with backup commands, consolidation suggestions, and verification steps
+- **`references/marketplace-reference.md`** — Complete official/endorsed plugin listings, identification methods, replacement lookup, and overlap resolution rules
+- **`references/portfolio-templates.md`** — Recommended skill sets by developer role (Python Data Scientist, TypeScript Full-Stack, Power BI/DAX, DevOps, Solo Generalist)

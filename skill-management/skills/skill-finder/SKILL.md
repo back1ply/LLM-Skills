@@ -1,6 +1,6 @@
 ---
 name: skill-finder
-description: Identify capability gaps and discover Claude Code plugins/MCPs via web search. Use when user asks to find skills, discover plugins, search for MCPs, fill gaps in capabilities, or when Claude recognizes it lacks tools for a task. Searches GitHub and marketplaces to suggest installations.
+description: This skill should be used when the user asks to "find a skill", "discover plugins", "search for an MCP", "what plugins exist for X", "fill my skill gaps", "improve my setup", or when Claude recognizes it lacks tools for a task. Searches GitHub and marketplaces to suggest installations.
 ---
 
 # Skill Finder

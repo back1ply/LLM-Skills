@@ -1,6 +1,6 @@
 ---
 name: writing-dax-measures
-description: Use when writing DAX measures for Power BI, before generating any DAX code, to ensure correct syntax, optimal performance, and adherence to best practices on the first attempt
+description: This skill should be used when the user asks to "write DAX measures", "create Power BI calculations", "help with DAX formulas", "write time intelligence", or mentions aggregations, filters, or DAX performance. Ensures correct syntax, optimal performance, and best practices on the first attempt.
 ---
 
 # Writing DAX Measures
@@ -11,21 +11,11 @@ Generate correct DAX measures for Power BI on the first attempt by following pre
 
 **Core principle**: Prompt quality exceeds model size. Accurate schema + avoiding anti-patterns + following best practices = first-try success.
 
-## When to Use
+## Scope
 
-Use this skill when:
+Applicable to DAX measure creation, Power BI calculations, DAX formulas, and aggregations/filters/time intelligence in Power BI context.
 
-- User requests DAX measure creation
-- User asks to write Power BI calculations
-- User needs help with DAX formulas
-- User mentions aggregations, filters, or time intelligence in Power BI context
-
-Do NOT use for:
-
-- SQL queries
-- Excel formulas
-- Python/R data analysis
-- Other BI tools (Tableau, Qlik)
+Not applicable to SQL queries, Excel formulas, Python/R data analysis, or other BI tools (Tableau, Qlik).
 
 ## Mandatory Pre-Generation Workflow
 
@@ -198,7 +188,7 @@ RETURN SUMX(Table, MeasureValue * Table[Column])
 
 ### Date Table Requirements (CRITICAL)
 
-Your date table MUST satisfy these requirements:
+The date table MUST satisfy these requirements:
 
 ✅ **Continuous dates**: All dates from Jan 1 to Dec 31 for all years
 ✅ **Marked as Date Table**: Apply "Mark as Date Table" setting in Power BI
