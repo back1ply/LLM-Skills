@@ -148,6 +148,35 @@ Audit, optimize, and discover Claude Code skills/plugins. Find duplicates, detec
 
 ---
 
+### KPI Checklists
+
+**Status**: ✅ Available
+**Version**: 1.0.0
+**Category**: Business Performance
+
+Develop meaningful, trusted KPIs and reports using the structured ROKS (Results Orientated KPI System) methodology — from strategy alignment through to sustained production.
+
+**Installation**:
+
+```bash
+/plugin install kpi@LLM-Skills
+```
+
+**What it provides**:
+
+- ✅ 7-step ROKS framework for KPI development
+- ✅ Strategy fitness and stakeholder engagement checklists
+- ✅ KPI Tree workshop facilitation guides
+- ✅ Importance/Availability shortlisting matrix
+- ✅ KPI Definition Canvas and templates
+- ✅ 53-point Brilliant Dashboards design checklist
+- ✅ Go-live checklists: buy-in, data problems, SMED, FMEA
+- ✅ PDCA improvement cycle and meeting effectiveness guides
+
+**Read more**: [KPI Plugin Documentation](./kpi/README.md)
+
+---
+
 ## 🎯 Marketplace Philosophy
 
 ### First-Try Success
