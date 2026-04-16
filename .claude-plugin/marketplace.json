@@ -48,6 +48,17 @@
                                    },
                         "source":  "./skill-management",
                         "category":  "productivity"
+                    },
+                    {
+                        "name":  "channel-artifact",
+                        "description":  "Build any interactive HTML artifact backed by a Claude Code channel plugin. Users pin comments on data points; each pin push-delivers to the live Claude session; Claude responds and updates the artifact in place via tool calls",
+                        "version":  "1.0.0",
+                        "author":  {
+                                       "name":  "back1ply",
+                                       "email":  "back1ply@gmail.com"
+                                   },
+                        "source":  "./channel-artifact",
+                        "category":  "productivity"
                     }
                 ],
     "metadata":  {

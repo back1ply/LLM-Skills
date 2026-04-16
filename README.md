@@ -177,6 +177,32 @@ Develop meaningful, trusted KPIs and reports using the structured ROKS (Results 
 
 ---
 
+### Channel Artifact
+
+**Status**: ✅ Available
+**Version**: 1.0.0
+**Category**: Productivity
+
+Build any interactive HTML artifact served at `localhost:<PORT>` by a Bun-backed MCP channel plugin. Pin comments on data points; each pin push-delivers to the live Claude session as a channel notification; Claude addresses the question and updates the artifact in place via tool calls.
+
+**Installation**:
+
+```bash
+/plugin install channel-artifact@LLM-Skills
+```
+
+**What it provides**:
+
+- ✅ Generic MCP stdio + HTTP + WebSocket + channel notification plumbing
+- ✅ Pin comments anywhere on the page or on named data nodes
+- ✅ Push-delivery of comments to live Claude session
+- ✅ Claude responds via tool calls (`mark_addressed`, `update_node`, `update_data`)
+- ✅ Comments persist with Claude's replies rendered beneath pins
+- ✅ Live UI refresh over WebSocket
+- ✅ Works with any artifact type: dashboards, graph editors, kanban, maps, scatterplots, etc.
+
+---
+
 ## 🎯 Marketplace Philosophy
 
 ### First-Try Success
