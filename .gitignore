@@ -12,6 +12,7 @@
 !prompt-engineering/
 !data-engineering/
 !skill-management/
+!channel-artifact/
 
 # Keep READMEs in plugin folders
 !dax/README.md
@@ -29,6 +30,7 @@ dax/skills/no-calculate-dax/
 !data-engineering/skills/**
 !skill-management/skills/
 !skill-management/skills/**
+!channel-artifact/**
 
 # Keep plugin config
 !.claude-plugin/
