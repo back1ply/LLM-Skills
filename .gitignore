@@ -1,0 +1,21 @@
+# Ignore everything by default
+*
+
+# Repo essentials
+!.gitignore
+!.gitattributes
+!LICENSE
+!README.md
+
+# Plugin manifest
+!.claude-plugin/
+!.claude-plugin/**
+
+# All skills (legacy root — being phased out)
+!skills/
+!skills/**
+
+# All skills (monorepo structure)
+!skills/
+!skills/**
+skills/plugins/

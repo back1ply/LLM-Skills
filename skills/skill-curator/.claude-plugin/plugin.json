@@ -1,0 +1,16 @@
+{
+  "name": "skill-curator",
+  "description": "Audit, improve, and maintain Claude Code skill libraries",
+  "version": "3.0.0",
+  "author": {
+    "name": "back1ply",
+    "email": "back1ply@gmail.com"
+  },
+  "homepage": "https://github.com/back1ply/LLM-Skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/back1ply/LLM-Skills"
+  },
+  "license": "MIT",
+  "keywords": ["skills", "curation", "meta", "claude-code", "quality"]
+}

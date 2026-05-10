@@ -1,0 +1,16 @@
+{
+  "name": "skill-finder",
+  "description": "Discover and activate the right Claude Code skill for any task",
+  "version": "3.0.0",
+  "author": {
+    "name": "back1ply",
+    "email": "back1ply@gmail.com"
+  },
+  "homepage": "https://github.com/back1ply/LLM-Skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/back1ply/LLM-Skills"
+  },
+  "license": "MIT",
+  "keywords": ["skills", "discovery", "meta", "claude-code"]
+}
