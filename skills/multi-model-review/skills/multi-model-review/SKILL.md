@@ -35,6 +35,7 @@ Or export before launching: `export OPENROUTER_API_KEY=sk-or-...`
 | **Translation** | `openai/gpt-5.5` + `google/gemini-3.1-pro-preview` | GPT-5.5 leads FLORES for most European language pairs; Gemini leads CJK, Portuguese, French, Ukrainian |
 | **Creative writing** | `anthropic/claude-sonnet-4.6` + `google/gemini-3.1-pro-preview` | Claude Sonnet #1 EQ-Bench (1936 ELO, narrative quality); Gemini #1 Chatbot Arena creative writing category |
 | **Quick check** | `openai/gpt-4.1-mini` + `google/gemini-3.1-flash-lite` | Cheap, low latency — flash-lite at $0.25/M input |
+| **Free** | `openrouter/free` + `openrouter/free` | Zero cost; OpenRouter auto-selects from its entire free model pool each call — non-deterministic but always available; rate-limited |
 
 ### Coding variants — pick by benchmark
 
@@ -51,6 +52,8 @@ Default when unsure: **Code review** preset.
 > **Aggregator validation (May 2026)**: LMArena human-preference Elo, Artificial Analysis Intelligence Index, and OpenRouter usage all confirm the same three models at the statistical frontier — `openai/gpt-5.5` (LMArena 1506 Elo), `gemini-3.1-pro-preview` (1505), `claude-opus-4.7` (1503) — statistically tied within 95% CI. Use task-specific benchmarks above to break ties; aggregate rank alone is insufficient.
 
 > **Always-latest aliases**: OpenRouter supports `~author/family-latest` slugs (e.g. `~anthropic/claude-opus-latest`, `~google/gemini-pro-latest`) that auto-resolve to the newest model in a family — useful if you want to stay current without editing prompts.
+>
+> **Free-tier equivalent**: `openrouter/free` routes each call to a random available free model from OpenRouter's entire pool — no slug to maintain, always zero cost. Append `:free` to any specific model ID (e.g. `minimax/minimax-m2.5:free`, `qwen/qwen3-coder-480b:free`) if you want a pinned free model instead of random selection.
 
 **Cost warning**: If the input exceeds ~8,000 tokens, warn the user before proceeding — costs multiply per model.
 - `claude-opus-4.7` ($5/M in · $25/M out) + `openai/gpt-5.5` ($5/M in · $30/M out) — tier-1 pair; both appear in most high-quality presets
