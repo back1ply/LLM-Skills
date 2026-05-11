@@ -44,6 +44,7 @@ Or export before launching: `export OPENROUTER_API_KEY=sk-or-...`
 | **Code · BIRD (SQL)** | `anthropic/claude-opus-4.7` + `google/gemini-3.1-pro-preview` | Opus #1 BIRD execution accuracy May 2026; Gemini #1 BIRD single-model track + leads BigQuery/Snowflake dialects |
 | **Code · Terminal-Bench** | `openai/gpt-5.5` + `anthropic/claude-opus-4.7` | GPT-5.5 82.7% Terminal-Bench 2.0 (CLI/server tasks, #1); Opus 4.7 69.4% (#2) — different training lineages, best agentic CLI pair |
 | **Code · LiveCodeBench** | `openai/gpt-5.5` + `google/gemini-3.1-pro-preview` | Only contamination-proof coding benchmark (problems released after training cutoffs); both top-3 on coding leaderboards with different provider lineages |
+| **Code · Budget** | `moonshotai/kimi-k2.6` + `deepseek/deepseek-v4-pro` | Kimi K2.6 ties GPT-5.5 on coding ($0.75/M in); DeepSeek V4 Pro 89/100 coding score ($0.44/M in) — combined ~6× cheaper than Opus+GPT-5.5 with comparable code-review quality |
 
 Default when unsure: **Code review** preset.
 
@@ -54,6 +55,7 @@ Default when unsure: **Code review** preset.
 **Cost warning**: If the input exceeds ~8,000 tokens, warn the user before proceeding — costs multiply per model.
 - `claude-opus-4.7` ($5/M in · $25/M out) + `openai/gpt-5.5` ($5/M in · $30/M out) — tier-1 pair; both appear in most high-quality presets
 - `gemini-3.1-pro-preview` ($2/M in · $12/M out): middle tier; best context/value tradeoff; appears in many presets as a cost-efficient second model
+- `moonshotai/kimi-k2.6` ($0.75/M in · $3.50/M out) + `deepseek/deepseek-v4-pro` ($0.44/M in · $0.87/M out): budget coding pair — use Code · Budget to get near-frontier code review at ~6× lower cost
 - `openai/gpt-4.1-mini` + `google/gemini-3.1-flash-lite` ($0.25/M in): use Quick check for anything non-critical
 - Presets with two Opus/GPT-5.5-class models can run $0.30–$2.00 per review on large files — warn the user if input > 5,000 tokens
 
