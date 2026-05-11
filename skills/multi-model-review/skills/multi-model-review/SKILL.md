@@ -26,13 +26,13 @@ Or export before launching: `export OPENROUTER_API_KEY=sk-or-...`
 
 | Task | Models | Benchmark backing |
 |------|--------|-------------------|
-| **Code review** | `anthropic/claude-opus-4.7` + `openai/gpt-5` | Both top-3 SWE-Bench Verified; different training lineages catch different bugs |
+| **Code review** | `anthropic/claude-opus-4.7` + `openai/gpt-5.5` | Both top-3 SWE-Bench Verified; different training lineages catch different bugs |
 | **Security audit** | `google/gemini-3.1-pro-preview` + `anthropic/claude-opus-4.7` | Gemini 94.3% GPQA Diamond (deep science/logic reasoning) + Anthropic safety-trained #1 coder |
 | **Architecture** | `google/gemini-3.1-pro-preview` + `anthropic/claude-sonnet-4.6` | Both 1M+ context; strong structured reasoning at lower cost than Opus |
-| **Writing critique** | `anthropic/claude-sonnet-4.6` + `openai/gpt-5` | Claude Sonnet #1 EQ-Bench Creative Writing (1936 ELO); GPT-5 trained for reduced sycophancy |
+| **Writing critique** | `anthropic/claude-sonnet-4.6` + `openai/gpt-5.5` | Claude Sonnet #1 EQ-Bench Creative Writing (1936 ELO); GPT-5.5 leads LMArena writing category + trained for reduced sycophancy |
 | **Math / science** | `openai/o4-mini-high` + `google/gemini-3.1-pro-preview` | o4-mini 99.5% AIME 2025 (best math reasoning); Gemini 94.3% GPQA Diamond (graduate science) |
-| **Long document** | `google/gemini-3.1-pro-preview` + `moonshotai/kimi-k2.5` | Only models with effective end-to-end recall at 1M–2M tokens; Kimi 99.5% nolima long-context benchmark |
-| **Translation** | `deepseek/deepseek-v3.2-speciale` + `google/gemini-3.1-pro-preview` | DeepSeek #1 on FLORES across most language pairs; Gemini leads for CJK, Portuguese, French, Ukrainian |
+| **Long document** | `google/gemini-3.1-pro-preview` + `moonshotai/kimi-k2.6` | Only models with effective end-to-end recall at 1M–2M tokens; Kimi 99.5% nolima long-context benchmark |
+| **Translation** | `deepseek/deepseek-v4-pro` + `google/gemini-3.1-pro-preview` | DeepSeek #1 on FLORES across most language pairs; Gemini leads for CJK, Portuguese, French, Ukrainian |
 | **Creative writing** | `anthropic/claude-sonnet-4.6` + `google/gemini-3.1-pro-preview` | Claude Sonnet #1 EQ-Bench (1936 ELO, narrative quality); Gemini #1 Chatbot Arena creative writing category |
 | **Quick check** | `openai/gpt-4.1-mini` + `google/gemini-3.1-flash-lite` | Cheap, low latency — flash-lite at $0.25/M input |
 
@@ -40,20 +40,23 @@ Or export before launching: `export OPENROUTER_API_KEY=sk-or-...`
 
 | Task | Models | Benchmark |
 |------|--------|-----------|
-| **Code · WebDev Arena** | `anthropic/claude-opus-4.7` + `moonshotai/kimi-k2.5` | Opus #1 (1570 ELO) + Kimi #7 (1523 ELO) on WebDev Arena; catches different failure modes on UI/canvas |
+| **Code · WebDev Arena** | `anthropic/claude-opus-4.7` + `moonshotai/kimi-k2.6` | Opus #1 (1570 ELO) + Kimi #7 (1523 ELO) on WebDev Arena; catches different failure modes on UI/canvas |
 | **Code · BIRD (SQL)** | `anthropic/claude-opus-4.7` + `google/gemini-3.1-pro-preview` | Opus #1 BIRD execution accuracy May 2026; Gemini #1 BIRD single-model track + leads BigQuery/Snowflake dialects |
-| **Code · Terminal-Bench** | `anthropic/claude-opus-4.7` + `deepseek/deepseek-v3.2-speciale` | Opus 82.7% Terminal-Bench 2.0 (CLI/server tasks); DeepSeek trained on diverse enterprise backend codebases |
+| **Code · Terminal-Bench** | `openai/gpt-5.5` + `anthropic/claude-opus-4.7` | GPT-5.5 82.7% Terminal-Bench 2.0 (CLI/server tasks, #1); Opus 4.7 69.4% (#2) — different training lineages, best agentic CLI pair |
+| **Code · LiveCodeBench** | `openai/gpt-5.5` + `moonshotai/kimi-k2.6` | Only contamination-proof coding benchmark (problems released after training cutoffs); Kimi K2.6 ties GPT-5.5 on coding with complementary open-weight training lineage |
 
 Default when unsure: **Code review** preset.
+
+> **Aggregator validation (May 2026)**: LMArena human-preference Elo, Artificial Analysis Intelligence Index, and OpenRouter usage all confirm the same three models at the statistical frontier — `openai/gpt-5.5` (LMArena 1506 Elo), `gemini-3.1-pro-preview` (1505), `claude-opus-4.7` (1503) — statistically tied within 95% CI. Use task-specific benchmarks above to break ties; aggregate rank alone is insufficient.
 
 > **Always-latest aliases**: OpenRouter supports `~author/family-latest` slugs (e.g. `~anthropic/claude-opus-latest`, `~google/gemini-pro-latest`) that auto-resolve to the newest model in a family — useful if you want to stay current without editing prompts.
 
 **Cost warning**: If the input exceeds ~8,000 tokens, warn the user before proceeding — costs multiply per model.
-- `claude-opus-4.7` ($5/M in · $25/M out) appears in most high-quality presets — it's the expensive anchor
-- `deepseek/deepseek-v3.2-speciale` (~$1/M in) is the cheapest tier-1 model; use it to pair with Opus without doubling cost
-- `kimi-k2.5` ($0.95/M in · $4/M out): great value for long-doc and frontend; cost spikes on 100K+ token inputs
+- `claude-opus-4.7` ($5/M in · $25/M out) + `openai/gpt-5.5` ($5/M in · $30/M out) — tier-1 pair; both appear in most high-quality presets
+- `deepseek/deepseek-v4-pro` (~$0.44/M in · $0.87/M out): cheapest tier-1 model; use to pair with Opus without doubling cost
+- `moonshotai/kimi-k2.6` ($0.75/M in · $3.50/M out): great value for long-doc and coding; cost spikes on 100K+ token inputs
 - `gemini-3.1-pro-preview` ($2/M in · $12/M out): middle tier; best context/value tradeoff
-- Engineering sub-presets with two Opus-class models (frontend, SQL, analytics) can run $0.30–$2.00 per review on large files — warn the user if input > 5,000 tokens
+- Presets with two Opus-class models (SQL, WebDev Arena) can run $0.30–$2.00 per review on large files — warn the user if input > 5,000 tokens
 
 ---
 
