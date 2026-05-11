@@ -13,7 +13,7 @@ Output:
 
 Requires:
     OPENROUTER_API_KEY environment variable.
-    httpx  (already globally installed via: pip install httpx)
+    httpx  (pip install httpx)
 """
 import asyncio
 import argparse
@@ -28,7 +28,6 @@ except ImportError:
     sys.exit(1)
 
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
-REFERER = "https://github.com/back1ply/LLM-Skills"
 
 
 async def query(
@@ -47,8 +46,7 @@ async def query(
             BASE_URL,
             headers={
                 "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
-                "HTTP-Referer": REFERER,
-                "X-Title": "LLM-Skills Multi-Model Review",
+                "X-Title": "Multi-Model Review",
             },
             json={"model": model, "messages": messages},
             timeout=120.0,
