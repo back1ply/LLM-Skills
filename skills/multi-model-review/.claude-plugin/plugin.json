@@ -7,10 +7,7 @@
     "email": "back1ply@gmail.com"
   },
   "homepage": "https://github.com/back1ply/LLM-Skills",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/back1ply/LLM-Skills"
-  },
+  "repository": "https://github.com/back1ply/LLM-Skills",
   "license": "MIT",
   "keywords": ["code-review", "llm", "multi-model", "quality", "ai"]
 }
