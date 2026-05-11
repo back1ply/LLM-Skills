@@ -24,18 +24,36 @@ Or export before launching: `export OPENROUTER_API_KEY=sk-or-...`
 
 ## Step 1 — Detect task type, select preset
 
-| Task | Models | Rationale |
+| Task | Models | Benchmark backing |
+|------|--------|-------------------|
+| **Code review** | `anthropic/claude-opus-4.7` + `openai/gpt-5` | Both top-3 SWE-Bench Verified; different training lineages catch different bugs |
+| **Security audit** | `google/gemini-3.1-pro-preview` + `anthropic/claude-opus-4.7` | Gemini 94.3% GPQA Diamond (deep science/logic reasoning) + Anthropic safety-trained #1 coder |
+| **Architecture** | `google/gemini-3.1-pro-preview` + `anthropic/claude-sonnet-4.6` | Both 1M+ context; strong structured reasoning at lower cost than Opus |
+| **Writing critique** | `anthropic/claude-sonnet-4.6` + `openai/gpt-5` | Claude Sonnet #1 EQ-Bench Creative Writing (1936 ELO); GPT-5 trained for reduced sycophancy |
+| **Math / science** | `openai/o4-mini-high` + `google/gemini-3.1-pro-preview` | o4-mini 99.5% AIME 2025 (best math reasoning); Gemini 94.3% GPQA Diamond (graduate science) |
+| **Long document** | `google/gemini-3.1-pro-preview` + `moonshotai/kimi-k2.5` | Only models with effective end-to-end recall at 1M–2M tokens; Kimi 99.5% nolima long-context benchmark |
+| **Translation** | `deepseek/deepseek-v3.2-speciale` + `google/gemini-3.1-pro-preview` | DeepSeek #1 on FLORES across most language pairs; Gemini leads for CJK, Portuguese, French, Ukrainian |
+| **Creative writing** | `anthropic/claude-sonnet-4.6` + `google/gemini-3.1-pro-preview` | Claude Sonnet #1 EQ-Bench (1936 ELO, narrative quality); Gemini #1 Chatbot Arena creative writing category |
+| **Quick check** | `openai/gpt-4.1-mini` + `google/gemini-3.1-flash-lite` | Cheap, low latency — flash-lite at $0.25/M input |
+
+### Coding variants — pick by benchmark
+
+| Task | Models | Benchmark |
 |------|--------|-----------|
-| **Code review** | `openai/gpt-4o` + `google/gemini-2.5-pro-preview` | Different training data, broad coverage |
-| **Security audit** | `openai/o3` + `anthropic/claude-opus-4` | Deep reasoning + safety-trained |
-| **Architecture** | `google/gemini-2.5-pro-preview` + `openai/o3` | Long context + structured reasoning |
-| **Writing critique** | `google/gemini-2.5-flash` + `meta-llama/llama-4-maverick` | Fast + voice diversity |
-| **Quick check** | `openai/gpt-4o-mini` + `google/gemini-2.5-flash` | Cheap, low latency |
+| **Code · WebDev Arena** | `anthropic/claude-opus-4.7` + `moonshotai/kimi-k2.5` | Opus #1 (1570 ELO) + Kimi #7 (1523 ELO) on WebDev Arena; catches different failure modes on UI/canvas |
+| **Code · BIRD (SQL)** | `anthropic/claude-opus-4.7` + `google/gemini-3.1-pro-preview` | Opus #1 BIRD execution accuracy May 2026; Gemini #1 BIRD single-model track + leads BigQuery/Snowflake dialects |
+| **Code · Terminal-Bench** | `anthropic/claude-opus-4.7` + `deepseek/deepseek-v3.2-speciale` | Opus 82.7% Terminal-Bench 2.0 (CLI/server tasks); DeepSeek trained on diverse enterprise backend codebases |
 
 Default when unsure: **Code review** preset.
 
-**Cost warning**: If the input exceeds ~8,000 tokens, warn the user before proceeding —
-costs multiply per model. `o3` + `claude-opus-4` can run $0.10–$0.50 per review.
+> **Always-latest aliases**: OpenRouter supports `~author/family-latest` slugs (e.g. `~anthropic/claude-opus-latest`, `~google/gemini-pro-latest`) that auto-resolve to the newest model in a family — useful if you want to stay current without editing prompts.
+
+**Cost warning**: If the input exceeds ~8,000 tokens, warn the user before proceeding — costs multiply per model.
+- `claude-opus-4.7` ($5/M in · $25/M out) appears in most high-quality presets — it's the expensive anchor
+- `deepseek/deepseek-v3.2-speciale` (~$1/M in) is the cheapest tier-1 model; use it to pair with Opus without doubling cost
+- `kimi-k2.5` ($0.95/M in · $4/M out): great value for long-doc and frontend; cost spikes on 100K+ token inputs
+- `gemini-3.1-pro-preview` ($2/M in · $12/M out): middle tier; best context/value tradeoff
+- Engineering sub-presets with two Opus-class models (frontend, SQL, analytics) can run $0.30–$2.00 per review on large files — warn the user if input > 5,000 tokens
 
 ---
 
@@ -55,7 +73,7 @@ Take the first result as `<script_path>`.
 
 ```bash
 python "<script_path>" \
-  --models "openai/gpt-4o,google/gemini-2.5-pro-preview" \
+  --models "anthropic/claude-opus-4.7,openai/gpt-5" \
   --prompt "<the code or text to review>" \
   --system "<system prompt from below>"
 ```
@@ -76,6 +94,27 @@ The script queries all models in parallel and prints JSON to stdout:
 
 **Writing critique**
 > You are a professional editor. Review for: clarity, logical flow, tone consistency, unsupported claims, and structural weaknesses. Distinguish must-fix from polish.
+
+**Math / science**
+> You are an expert mathematician and scientist. Check every logical step, formula, proof, or derivation. Flag: incorrect reasoning chains, wrong assumptions, unit errors, missing edge cases, and claims that lack justification. Rate each finding: Error / Warning / Note.
+
+**Long document**
+> You are a meticulous analyst reviewing a long document. Identify: internal contradictions, unsupported claims, missing sections, logical gaps, and any conclusions that do not follow from the evidence. Cite the specific location of each finding.
+
+**Translation**
+> You are a professional translator and linguist. Review this translation for: accuracy of meaning, idiomatic naturalness in the target language, register consistency, cultural appropriateness, and any omissions or additions versus the source. Rate: Critical mistranslation / Awkward phrasing / Style suggestion.
+
+**Creative writing**
+> You are a literary editor with deep genre expertise. Evaluate this creative writing for: narrative momentum, character consistency, dialogue authenticity, show-vs-tell balance, sensory grounding, and tonal control. Distinguish structural issues from line-level suggestions.
+
+**Code · WebDev Arena**
+> You are an expert UI/web engineer. Review for: component correctness, state bugs, unnecessary re-renders, accessibility (WCAG 2.2), layout edge cases, and browser compatibility. Rate each finding: Critical / Warning / Suggestion.
+
+**Code · BIRD (SQL)**
+> You are a database engineer fluent in Postgres, BigQuery, Snowflake, and MySQL. Review for: query correctness, NULL semantics, cartesian join risk, implicit type coercions, missing indexes, and dialect-specific pitfalls. Flag any query that silently returns wrong results. Rate: Error / Warning / Note.
+
+**Code · Terminal-Bench**
+> You are a senior backend/systems engineer. Review for: API contract correctness, race conditions, improper error propagation, N+1 queries, missing idempotency, resource leaks, and scalability bottlenecks. Rate: Critical / Warning / Suggestion.
 
 ---
 
@@ -118,7 +157,7 @@ Run the script directly from any shell without Claude:
 
 ```bash
 python scripts/or_review.py \
-  --models "openai/gpt-4o,google/gemini-2.5-pro-preview" \
+  --models "anthropic/claude-opus-4.7,openai/gpt-5" \
   --prompt "Review this function: ..." \
   --system "You are an expert code reviewer..."
 ```
