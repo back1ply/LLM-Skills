@@ -2,84 +2,66 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "llm-skills",
   "owner": {
-    "name": "back1ply",
-    "email": "back1ply@gmail.com"
+    "name": "back1ply"
   },
   "metadata": {
     "description": "Personal skill toolkit — DAX, data engineering, KPI, prompt engineering, multi-model review, and skill management",
-    "version": "3.0.0",
     "pluginRoot": "./skills"
   },
   "plugins": [
     {
       "name": "writing-dax-measures",
       "description": "Write, review, and debug DAX measures in Power BI and Analysis Services",
-      "version": "3.0.0",
       "source": "./skills/writing-dax-measures",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["dax", "power-bi", "measures", "data-modeling"]
     },
     {
       "name": "etl-pipeline-design",
       "description": "Design, evaluate, and troubleshoot ETL/ELT data pipeline architectures",
-      "version": "3.0.0",
       "source": "./skills/etl-pipeline-design",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["etl", "elt", "data-engineering", "pipelines", "orchestration"]
     },
     {
       "name": "kpi-checklists",
       "description": "Define, align, and implement KPIs from strategy through dashboard go-live",
-      "version": "3.0.0",
       "source": "./skills/kpi-checklists",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["kpi", "analytics", "bi", "dashboard", "metrics"]
     },
     {
       "name": "skill-finder",
       "description": "Discover and activate the right Claude Code skill for any task",
-      "version": "3.0.0",
       "source": "./skills/skill-finder",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["skills", "discovery", "meta", "claude-code"]
     },
     {
       "name": "skill-curator",
       "description": "Audit, improve, and maintain Claude Code skill libraries",
-      "version": "3.0.0",
       "source": "./skills/skill-curator",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["skills", "curation", "meta", "claude-code", "quality"]
     },
     {
       "name": "multi-model-review",
       "description": "Cross-model code review using multiple LLM providers for independent perspectives",
-      "version": "3.0.0",
       "source": "./skills/multi-model-review",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["code-review", "llm", "multi-model", "quality", "ai"]
     },
     {
       "name": "channel-artifact",
       "description": "Create shareable Claude Code channel artifacts with live web UIs",
-      "version": "3.0.0",
       "source": "./skills/channel-artifact",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["artifacts", "web-ui", "sharing", "claude-code", "channel"]
     },
     {
       "name": "humanitys-last-prompt-engineer",
       "description": "Advanced prompt engineering techniques, role templates, and scoring frameworks",
-      "version": "3.0.0",
       "source": "./skills/humanitys-last-prompt-engineer",
-      "author": { "name": "back1ply", "email": "back1ply@gmail.com" },
       "license": "MIT",
       "keywords": ["prompt-engineering", "llm", "ai", "techniques", "templates"]
     }
