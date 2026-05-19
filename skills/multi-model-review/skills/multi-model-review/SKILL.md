@@ -36,7 +36,7 @@ Match the user's task to the best preset. The `--preset` flag selects the right 
 | **Long document** | `docs` | `google/gemini-3.1-pro-preview` + `openai/gpt-5.5` | Both 1M+ context; Gemini leads long-context recall |
 | **Translation** | `translate` | `openai/gpt-5.5` + `google/gemini-3.1-pro-preview` | GPT-5.5 leads FLORES European; Gemini leads CJK + French |
 | **Creative writing** | `creative` | `anthropic/claude-sonnet-4.6` + `google/gemini-3.1-pro-preview` | Claude #1 EQ-Bench narrative; Gemini #1 Chatbot Arena creative |
-| **Quick check** | `quick` | `openai/gpt-4.1-mini` + `google/gemini-3.1-flash-lite` | Cheap, low latency — good for non-critical checks |
+| **Quick check** | `quick` | `openai/gpt-4.1-mini` + `google/gemini-3.1-flash-lite-preview` | Cheap, low latency — good for non-critical checks |
 | **Free** | `free` | `openrouter/free` × 2 | Zero cost; each call independently routed to a random free model |
 
 ### Coding specialists — pick by benchmark
@@ -55,7 +55,7 @@ Default when task is unclear: **`code`**.
 > - `claude-opus-4.7` ($5/M in · $25/M out) + `gpt-5.5` ($5/M in · $30/M out) — tier-1 pair; ~$0.20–$1.00/review on large files
 > - `gemini-3.1-pro-preview` ($2/M in · $12/M out) — middle tier; appears in many presets as a cost-efficient partner
 > - `budget` preset ($0.75/M + $0.44/M in): near-frontier code review at ~6× lower cost
-> - `quick` and `free` presets: always safe to run without warning
+> - `quick` (`gpt-4.1-mini` + `gemini-3.1-flash-lite-preview`) and `free`: always safe to run without warning
 
 ---
 

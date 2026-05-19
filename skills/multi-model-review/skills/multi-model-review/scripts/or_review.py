@@ -34,6 +34,15 @@ import os
 import sys
 import time
 
+# Force UTF-8 on all stdio — Windows defaults to cp1252/cp850 which breaks
+# non-ASCII content in model responses, progress symbols, and piped input.
+for _s in (sys.stdin, sys.stdout, sys.stderr):
+    if hasattr(_s, "reconfigure"):
+        try:
+            _s.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        except Exception:
+            pass
+
 try:
     import httpx
 except ImportError:
@@ -96,7 +105,7 @@ PRESETS: dict[str, dict] = {
         "system": "You are a literary editor with deep genre expertise. Evaluate this creative writing for: narrative momentum, character consistency, dialogue authenticity, show-vs-tell balance, sensory grounding, and tonal control. Distinguish structural issues from line-level suggestions.",
     },
     "quick": {
-        "models": ["openai/gpt-4.1-mini", "google/gemini-3.1-flash-lite"],
+        "models": ["openai/gpt-4.1-mini", "google/gemini-3.1-flash-lite-preview"],
         "system": "Review the following and identify the most important issues. Be concise and direct.",
     },
     "free": {
@@ -194,7 +203,7 @@ async def main() -> None:
     # Resolve content
     if args.file:
         try:
-            with open(args.file, encoding="utf-8") as f:
+            with open(args.file, encoding="utf-8", errors="replace") as f:
                 prompt = f.read()
         except OSError as e:
             print(json.dumps({"error": f"Cannot read file: {e}"}))
