@@ -1,7 +1,6 @@
 {
   "name": "writing-dax-measures",
   "description": "Write, review, and debug DAX measures in Power BI and Analysis Services",
-  "version": "3.0.0",
   "author": {
     "name": "back1ply",
     "email": "back1ply@gmail.com"
@@ -9,5 +8,10 @@
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",
   "license": "MIT",
-  "keywords": ["dax", "power-bi", "measures", "data-modeling"]
+  "keywords": [
+    "dax",
+    "power-bi",
+    "measures",
+    "data-modeling"
+  ]
 }

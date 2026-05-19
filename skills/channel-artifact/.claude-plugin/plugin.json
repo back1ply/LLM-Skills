@@ -1,7 +1,6 @@
 {
   "name": "channel-artifact",
   "description": "Create shareable Claude Code channel artifacts with live web UIs",
-  "version": "3.0.0",
   "author": {
     "name": "back1ply",
     "email": "back1ply@gmail.com"
@@ -9,5 +8,11 @@
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",
   "license": "MIT",
-  "keywords": ["artifacts", "web-ui", "sharing", "claude-code", "channel"]
+  "keywords": [
+    "artifacts",
+    "web-ui",
+    "sharing",
+    "claude-code",
+    "channel"
+  ]
 }
