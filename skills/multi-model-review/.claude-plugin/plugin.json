@@ -1,7 +1,6 @@
 {
   "name": "multi-model-review",
   "description": "Query 2–3 AI models in parallel via OpenRouter and synthesize findings. Supports 15 built-in presets (code, security, arch, writing, math, docs, translate, creative, quick, free, budget, code-web, code-sql, code-cli, code-live) with embedded system prompts, file input, cost tracking, and retry logic.",
-  "version": "3.0.0",
   "author": {
     "name": "back1ply"
   },
