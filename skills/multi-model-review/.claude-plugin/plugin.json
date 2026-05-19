@@ -1,13 +1,13 @@
 {
   "name": "multi-model-review",
-  "description": "Cross-model code review using multiple LLM providers for independent perspectives",
-  "version": "3.0.0",
+  "description": "Query 2–3 AI models in parallel via OpenRouter and synthesize findings. Supports 15 built-in presets (code, security, arch, writing, math, docs, translate, creative, quick, free, budget, code-web, code-sql, code-cli, code-live) with embedded system prompts, file input, cost tracking, and retry logic.",
+  "version": "4.0.0",
   "author": {
-    "name": "back1ply",
-    "email": "back1ply@gmail.com"
+    "name": "back1ply"
   },
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",
+  "bugs": "https://github.com/back1ply/LLM-Skills/issues",
   "license": "MIT",
-  "keywords": ["code-review", "llm", "multi-model", "quality", "ai"]
+  "keywords": ["code-review", "llm", "multi-model", "openrouter", "quality", "ai", "security", "architecture"]
 }
