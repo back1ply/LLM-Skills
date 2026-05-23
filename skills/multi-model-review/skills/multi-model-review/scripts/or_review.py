@@ -109,7 +109,7 @@ PRESETS: dict[str, dict] = {
         "system": "Review the following and identify the most important issues. Be concise and direct.",
     },
     "free": {
-        "models": ["openrouter/free", "openrouter/free"],
+        "models": ["qwen/qwen3-coder:free", "deepseek/deepseek-v4-flash:free"],
         "system": "Review the following and identify the most important issues. Be thorough but concise.",
     },
 }
@@ -137,17 +137,39 @@ async def _query(
                 "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
                 "X-Title": "Multi-Model Review",
             },
-            json={"model": model, "messages": messages, "max_tokens": max_tokens},
+            json={
+                "model": model,
+                "messages": messages,
+                "max_tokens": max_tokens,
+                "include_reasoning": True,
+                "transforms": ["middle-out"],
+            },
             timeout=timeout,
         )
         r.raise_for_status()
         elapsed = round(time.monotonic() - start, 2)
         data = r.json()
-        content = data["choices"][0]["message"]["content"]
+        if "error" in data:
+            err = data["error"]
+            meta = err.get("metadata") or {}
+            provider = meta.get("provider_name", "")
+            provider_str = f" [provider: {provider}]" if provider else ""
+            msg = f"ERROR {err.get('code', '?')}: {err.get('message', str(err))}{provider_str}"
+            print(f"  ✗ {model}: {msg}", file=sys.stderr)
+            return model, {"content": msg, "elapsed_s": elapsed}
+        msg = data["choices"][0]["message"]
+        content = msg["content"]
+        if not content:
+            if _attempt == 0:
+                print(f"  ↺ {model} empty response (cold start?), retrying...", file=sys.stderr)
+                return await _query(client, model, prompt, system, max_tokens, timeout, _attempt=1)
+            return model, {"content": "ERROR: empty response (model cold start?)", "elapsed_s": elapsed}
+        reasoning = msg.get("reasoning") or msg.get("reasoning_content")
         usage = data.get("usage", {})
         cost = usage.get("cost") or usage.get("total_cost")
         result = {
             "content": content,
+            "reasoning": reasoning,
             "elapsed_s": elapsed,
             "prompt_tokens": usage.get("prompt_tokens"),
             "completion_tokens": usage.get("completion_tokens"),
@@ -158,11 +180,20 @@ async def _query(
 
     except httpx.HTTPStatusError as e:
         elapsed = round(time.monotonic() - start, 2)
-        if e.response.status_code == 429 and _attempt == 0:
-            print(f"  ↺ {model} rate-limited, retrying in 5s...", file=sys.stderr)
-            await asyncio.sleep(5)
+        if e.response.status_code in (429, 502, 503) and _attempt == 0:
+            retry_after = e.response.headers.get("Retry-After")
+            try:
+                wait = float(retry_after) if retry_after else 5
+            except ValueError:
+                wait = 5
+            print(f"  ↺ {model} {e.response.status_code}, retrying in {wait:.0f}s...", file=sys.stderr)
+            await asyncio.sleep(wait)
             return await _query(client, model, prompt, system, max_tokens, timeout, _attempt=1)
-        msg = f"ERROR {e.response.status_code}: {e.response.text[:300]}"
+        try:
+            err_body = e.response.json().get("error", {})
+            msg = f"ERROR {e.response.status_code}: {err_body.get('message', e.response.text[:300])}"
+        except Exception:
+            msg = f"ERROR {e.response.status_code}: {e.response.text[:300]}"
         print(f"  ✗ {model}: {msg}", file=sys.stderr)
         return model, {"content": msg, "elapsed_s": elapsed}
 
