@@ -58,6 +58,7 @@ async def _query(
     system: str | None,
     max_tokens: int,
     timeout: float,
+    api_key: str = "",
     _attempt: int = 0,
 ) -> tuple[str, dict]:
     messages = []
@@ -70,7 +71,7 @@ async def _query(
         r = await client.post(
             BASE_URL,
             headers={
-                "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+                "Authorization": f"Bearer {api_key}",
                 "X-Title": "Multi-Model Review",
             },
             json={
@@ -98,7 +99,7 @@ async def _query(
         if not content:
             if _attempt == 0:
                 print(f"  ↺ {model} empty response (cold start?), retrying...", file=sys.stderr)
-                return await _query(client, model, prompt, system, max_tokens, timeout, _attempt=1)
+                return await _query(client, model, prompt, system, max_tokens, timeout, api_key, _attempt=1)
             return model, {"content": "ERROR: empty response (model cold start?)", "elapsed_s": elapsed}
         reasoning = msg.get("reasoning") or msg.get("reasoning_content")
         usage = data.get("usage", {})
@@ -124,7 +125,7 @@ async def _query(
                 wait = 5
             print(f"  ↺ {model} {e.response.status_code}, retrying in {wait:.0f}s...", file=sys.stderr)
             await asyncio.sleep(wait)
-            return await _query(client, model, prompt, system, max_tokens, timeout, _attempt=1)
+            return await _query(client, model, prompt, system, max_tokens, timeout, api_key, _attempt=1)
         try:
             err_body = e.response.json().get("error", {})
             msg = f"ERROR {e.response.status_code}: {err_body.get('message', e.response.text[:300])}"
@@ -146,7 +147,7 @@ async def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     ap.add_argument("--models", required=True, help="Comma-separated OpenRouter model IDs (e.g. 'openai/gpt-5.5,anthropic/claude-opus-4.8')")
-    ap.add_argument("--system", help="System prompt (overrides preset system prompt)")
+    ap.add_argument("--system", help="System prompt to send to all models (optional)")
     ap.add_argument("--prompt", help="Content to review (or use --file / pipe via stdin)")
     ap.add_argument("--file", help="Path to file to review")
     ap.add_argument("--max-tokens", type=int, default=2000, metavar="N", help="Max tokens per model response (default: 2000)")
@@ -172,7 +173,7 @@ async def main() -> None:
         print(json.dumps({"error": "Empty input — nothing to review"}))
         sys.exit(1)
 
-    # Resolve models + system prompt
+    # Parse model list and system prompt
     models = [m.strip() for m in args.models.split(",") if m.strip()]
     system = args.system
 
@@ -191,7 +192,7 @@ async def main() -> None:
 
     async with httpx.AsyncClient() as client:
         raw = await asyncio.gather(
-            *[_query(client, m, prompt, system, args.max_tokens, args.timeout) for m in models]
+            *[_query(client, m, prompt, system, args.max_tokens, args.timeout, api_key) for m in models]
         )
 
     total_elapsed = round(time.monotonic() - wall_start, 2)

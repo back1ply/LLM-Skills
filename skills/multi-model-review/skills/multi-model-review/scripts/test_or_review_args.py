@@ -2,11 +2,15 @@
 Argparse contract tests for or_review.py.
 Run: python -m pytest test_or_review_args.py -v
 """
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 SCRIPT = Path(__file__).parent / "or_review.py"
+
+# Strip API key so tests always exit at the key-check, never making network calls.
+_ENV_NO_KEY = {k: v for k, v in os.environ.items() if k != "OPENROUTER_API_KEY"}
 
 
 def run(args: list[str]) -> subprocess.CompletedProcess:
@@ -15,6 +19,7 @@ def run(args: list[str]) -> subprocess.CompletedProcess:
         capture_output=True,
         text=True,
         timeout=10,
+        env=_ENV_NO_KEY,
     )
 
 
