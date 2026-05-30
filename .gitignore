@@ -19,3 +19,7 @@
 !skills/
 !skills/**
 skills/plugins/
+
+# Design specs and docs
+!docs/
+!docs/**
