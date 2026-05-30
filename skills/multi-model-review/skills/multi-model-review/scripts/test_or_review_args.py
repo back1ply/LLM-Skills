@@ -14,13 +14,15 @@ def run(args: list[str]) -> subprocess.CompletedProcess:
         [sys.executable, str(SCRIPT)] + args,
         capture_output=True,
         text=True,
+        timeout=10,
     )
 
 
 def test_models_required_without_it_exits_nonzero():
-    """--models is now required; no --models → non-zero exit."""
+    """--models is now required; no --models → argparse error (exit 2)."""
     r = run(["--prompt", "hello"])
     assert r.returncode != 0
+    assert "required" in r.stderr.lower() or "error" in r.stderr.lower()
 
 
 def test_preset_flag_is_gone():
@@ -42,6 +44,7 @@ def test_models_and_prompt_accepted():
     r = run(["--models", "openai/gpt-5.5", "--prompt", "hello"])
     assert "unrecognized arguments" not in r.stderr
     assert "invalid choice" not in r.stderr
+    assert r.returncode != 2  # exit 2 = argparse error
 
 
 def test_system_flag_still_works():
@@ -49,3 +52,4 @@ def test_system_flag_still_works():
     r = run(["--models", "openai/gpt-5.5", "--prompt", "x", "--system", "You are an expert."])
     assert "unrecognized arguments" not in r.stderr
     assert "invalid choice" not in r.stderr
+    assert r.returncode != 2  # exit 2 = argparse error
