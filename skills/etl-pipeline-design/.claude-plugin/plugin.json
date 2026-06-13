@@ -2,8 +2,7 @@
   "name": "etl-pipeline-design",
   "description": "Design, evaluate, and troubleshoot ETL/ELT data pipeline architectures",
   "author": {
-    "name": "back1ply",
-    "email": "back1ply@gmail.com"
+    "name": "back1ply"
   },
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",

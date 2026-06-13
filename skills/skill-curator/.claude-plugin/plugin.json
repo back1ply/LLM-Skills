@@ -2,8 +2,7 @@
   "name": "skill-curator",
   "description": "Audit, improve, and maintain Claude Code skill libraries",
   "author": {
-    "name": "back1ply",
-    "email": "back1ply@gmail.com"
+    "name": "back1ply"
   },
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",

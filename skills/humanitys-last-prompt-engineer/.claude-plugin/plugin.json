@@ -2,8 +2,7 @@
   "name": "humanitys-last-prompt-engineer",
   "description": "Advanced prompt engineering techniques, role templates, and scoring frameworks",
   "author": {
-    "name": "back1ply",
-    "email": "back1ply@gmail.com"
+    "name": "back1ply"
   },
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",

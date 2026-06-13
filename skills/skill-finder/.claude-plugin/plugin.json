@@ -2,8 +2,7 @@
   "name": "skill-finder",
   "description": "Discover and activate the right Claude Code skill for any task",
   "author": {
-    "name": "back1ply",
-    "email": "back1ply@gmail.com"
+    "name": "back1ply"
   },
   "homepage": "https://github.com/back1ply/LLM-Skills",
   "repository": "https://github.com/back1ply/LLM-Skills",
