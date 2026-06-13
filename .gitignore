@@ -23,3 +23,4 @@ skills/plugins/
 # Design specs and docs
 !docs/
 !docs/**
+__pycache__/
