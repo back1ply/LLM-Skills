@@ -1,0 +1,17 @@
+{
+  "name": "improve-system",
+  "description": "Keep your system sharp. Reviews your setup, captures learnings, audits for rot, recaps your sessions.",
+  "author": {
+    "name": "back1ply",
+    "email": "back1ply@gmail.com"
+  },
+  "homepage": "https://github.com/back1ply/LLM-Skills",
+  "repository": "https://github.com/back1ply/LLM-Skills",
+  "license": "MIT",
+  "keywords": [
+    "productivity",
+    "system",
+    "audit",
+    "claude-code"
+  ]
+}
