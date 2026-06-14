@@ -5,7 +5,7 @@
     "name": "back1ply"
   },
   "metadata": {
-    "description": "Personal skill toolkit — DAX, data engineering, KPI, prompt engineering, multi-model review, and skill management",
+    "description": "Personal skill toolkit - DAX, data engineering, KPI, prompt engineering, multi-model review, and skill management",
     "pluginRoot": "./skills"
   },
   "plugins": [
@@ -64,6 +64,13 @@
       "source": "./skills/humanitys-last-prompt-engineer",
       "license": "MIT",
       "keywords": ["prompt-engineering", "llm", "ai", "techniques", "templates"]
+    },
+    {
+      "name": "xquik-social-automation",
+      "description": "Use Xquik for X data extraction, webhook delivery, MCP workflows, and confirmation-gated publishing",
+      "source": "./skills/xquik-social-automation",
+      "license": "MIT",
+      "keywords": ["xquik", "x", "social-data", "automation", "webhooks", "mcp"]
     }
   ]
 }
